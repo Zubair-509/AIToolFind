@@ -21,6 +21,13 @@ export function Header() {
           </div>
           <nav className="hidden md:flex items-center space-x-8">
             <a 
+              href="/" 
+              className="text-gray-300 hover:text-green-400 transition-all duration-300 font-medium text-lg hover:drop-shadow-[0_0_8px_rgba(34,197,94,0.8)]"
+              data-testid="link-home"
+            >
+              Home
+            </a>
+            <a 
               href="#features" 
               className="text-gray-300 hover:text-purple-400 transition-all duration-300 font-medium text-lg hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]"
               data-testid="link-features"
