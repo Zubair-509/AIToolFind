@@ -8,6 +8,11 @@ AI Tools Finder is a full-stack web application that helps users discover the pe
 
 Preferred communication style: Simple, everyday language.
 
+## Recent Updates
+
+- Updated Gemini API prompt to specifically request 3 paid and 4 unpaid/free AI tools per recommendation
+- Configured system to provide exactly 7 tools total with proper distribution between free/freemium and paid options
+
 ## System Architecture
 
 ### Frontend Architecture
