@@ -4,6 +4,8 @@ import { ToolCard } from "@/components/tool-card";
 import { Download, Share, Plus, Gift, Crown, Sparkles } from "lucide-react";
 import { Link } from "wouter";
 import type { AITool } from "@shared/schema";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 interface RecommendationResults {
   id: string;
@@ -35,25 +37,182 @@ export default function Results() {
     }
   }, []);
 
-  const handleExport = () => {
+  const handleExport = async () => {
     if (!results) return;
     
-    const exportData = {
-      timestamp: new Date().toISOString(),
-      recommendations: results.tools,
-    };
-    
-    const blob = new Blob([JSON.stringify(exportData, null, 2)], { 
-      type: "application/json" 
-    });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "ai-tools-recommendations.json";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    try {
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const margin = 20;
+      let yPosition = margin;
+      
+      // Title
+      pdf.setFontSize(24);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('AI Tools & Agents Recommendations', margin, yPosition);
+      yPosition += 15;
+      
+      // Date
+      pdf.setFontSize(12);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text(`Generated on: ${new Date().toLocaleDateString()}`, margin, yPosition);
+      yPosition += 15;
+      
+      // Free Tools Section
+      if (freeTools.length > 0) {
+        pdf.setFontSize(18);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text('Free & Freemium Tools & Agents', margin, yPosition);
+        yPosition += 10;
+        
+        freeTools.forEach((tool, index) => {
+          // Check if we need a new page
+          if (yPosition > pageHeight - 60) {
+            pdf.addPage();
+            yPosition = margin;
+          }
+          
+          // Tool name
+          pdf.setFontSize(14);
+          pdf.setFont('helvetica', 'bold');
+          pdf.text(`${index + 1}. ${tool.tool_name} (${tool.pricing})`, margin, yPosition);
+          yPosition += 8;
+          
+          // Purpose
+          pdf.setFontSize(11);
+          pdf.setFont('helvetica', 'normal');
+          const purposeLines = pdf.splitTextToSize(tool.purpose, pageWidth - 2 * margin);
+          pdf.text(purposeLines, margin, yPosition);
+          yPosition += purposeLines.length * 5 + 3;
+          
+          // Pros
+          pdf.setFont('helvetica', 'bold');
+          pdf.text('Pros:', margin, yPosition);
+          yPosition += 5;
+          pdf.setFont('helvetica', 'normal');
+          tool.pros.forEach((pro) => {
+            const proLines = pdf.splitTextToSize(`• ${pro}`, pageWidth - 2 * margin - 5);
+            pdf.text(proLines, margin + 5, yPosition);
+            yPosition += proLines.length * 4;
+          });
+          yPosition += 3;
+          
+          // Cons
+          pdf.setFont('helvetica', 'bold');
+          pdf.text('Cons:', margin, yPosition);
+          yPosition += 5;
+          pdf.setFont('helvetica', 'normal');
+          tool.cons.forEach((con) => {
+            const conLines = pdf.splitTextToSize(`• ${con}`, pageWidth - 2 * margin - 5);
+            pdf.text(conLines, margin + 5, yPosition);
+            yPosition += conLines.length * 4;
+          });
+          yPosition += 3;
+          
+          // Why it fits
+          pdf.setFont('helvetica', 'bold');
+          pdf.text('Why it\'s perfect for you:', margin, yPosition);
+          yPosition += 5;
+          pdf.setFont('helvetica', 'normal');
+          const whyFitLines = pdf.splitTextToSize(tool.why_fit, pageWidth - 2 * margin);
+          pdf.text(whyFitLines, margin, yPosition);
+          yPosition += whyFitLines.length * 5 + 8;
+        });
+      }
+      
+      // Paid Tools Section
+      if (paidTools.length > 0) {
+        // Check if we need a new page for paid tools section
+        if (yPosition > pageHeight - 100) {
+          pdf.addPage();
+          yPosition = margin;
+        }
+        
+        yPosition += 10;
+        pdf.setFontSize(18);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text('Premium Tools & Agents', margin, yPosition);
+        yPosition += 10;
+        
+        paidTools.forEach((tool, index) => {
+          // Check if we need a new page
+          if (yPosition > pageHeight - 60) {
+            pdf.addPage();
+            yPosition = margin;
+          }
+          
+          // Tool name
+          pdf.setFontSize(14);
+          pdf.setFont('helvetica', 'bold');
+          pdf.text(`${index + 1}. ${tool.tool_name} (${tool.pricing})`, margin, yPosition);
+          yPosition += 8;
+          
+          // Purpose
+          pdf.setFontSize(11);
+          pdf.setFont('helvetica', 'normal');
+          const purposeLines = pdf.splitTextToSize(tool.purpose, pageWidth - 2 * margin);
+          pdf.text(purposeLines, margin, yPosition);
+          yPosition += purposeLines.length * 5 + 3;
+          
+          // Pros
+          pdf.setFont('helvetica', 'bold');
+          pdf.text('Pros:', margin, yPosition);
+          yPosition += 5;
+          pdf.setFont('helvetica', 'normal');
+          tool.pros.forEach((pro) => {
+            const proLines = pdf.splitTextToSize(`• ${pro}`, pageWidth - 2 * margin - 5);
+            pdf.text(proLines, margin + 5, yPosition);
+            yPosition += proLines.length * 4;
+          });
+          yPosition += 3;
+          
+          // Cons
+          pdf.setFont('helvetica', 'bold');
+          pdf.text('Cons:', margin, yPosition);
+          yPosition += 5;
+          pdf.setFont('helvetica', 'normal');
+          tool.cons.forEach((con) => {
+            const conLines = pdf.splitTextToSize(`• ${con}`, pageWidth - 2 * margin - 5);
+            pdf.text(conLines, margin + 5, yPosition);
+            yPosition += conLines.length * 4;
+          });
+          yPosition += 3;
+          
+          // Why it fits
+          pdf.setFont('helvetica', 'bold');
+          pdf.text('Why it\'s perfect for you:', margin, yPosition);
+          yPosition += 5;
+          pdf.setFont('helvetica', 'normal');
+          const whyFitLines = pdf.splitTextToSize(tool.why_fit, pageWidth - 2 * margin);
+          pdf.text(whyFitLines, margin, yPosition);
+          yPosition += whyFitLines.length * 5 + 8;
+        });
+      }
+      
+      // Save the PDF
+      pdf.save('ai-tools-agents-recommendations.pdf');
+      
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      // Fallback to JSON export if PDF fails
+      const exportData = {
+        timestamp: new Date().toISOString(),
+        recommendations: results.tools,
+      };
+      
+      const blob = new Blob([JSON.stringify(exportData, null, 2)], { 
+        type: "application/json" 
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "ai-tools-recommendations.json";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
   };
 
   const handleShare = async () => {
@@ -103,7 +262,7 @@ export default function Results() {
               data-testid="button-export-results"
             >
               <Download className="mr-2 h-4 w-4" />
-              Export Results
+              Export as PDF
             </Button>
             <Button 
               onClick={handleShare}
