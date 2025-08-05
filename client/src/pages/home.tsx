@@ -40,7 +40,7 @@ export default function Home() {
       <section id="features" className="py-20 bg-gradient-to-b from-white to-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-foreground mb-6">Why Choose AI Tools & Agents Finder?</h2>
+            <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink bg-clip-text text-transparent">Why Choose AI Tools & Agents Finder?</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               Get curated, up-to-date recommendations tailored to your specific business needs
             </p>
