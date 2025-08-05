@@ -7,7 +7,14 @@ export default function Home() {
     <div>
       {/* Landing Section */}
       <section className="pt-24 pb-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-emerald-50"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/30 via-pink-900/20 to-cyan-900/30"></div>
+        <div className="absolute inset-0 bg-gradient-to-tr from-neon-purple/10 via-neon-pink/5 to-neon-cyan/10 animate-pulse"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(168,85,247,0.15)_0%,transparent_50%)] 
+                        [background-position:0%_0%] animate-[neon-shift_6s_ease-in-out_infinite_alternate]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(236,72,153,0.15)_0%,transparent_50%)] 
+                        [background-position:100%_100%] animate-[neon-shift_8s_ease-in-out_infinite_alternate-reverse]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(34,211,238,0.1)_0%,transparent_60%)] 
+                        animate-[neon-rotate_10s_linear_infinite]"></div>
         <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="hero-text mb-8">
             Find the Perfect AI Tools & Agents for Your Business
