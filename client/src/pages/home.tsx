@@ -9,10 +9,10 @@ export default function Home() {
       <section className="pt-20 pb-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-            Find the Perfect <span className="text-primary">AI Tools</span> for Your Business
+            Find the Perfect <span className="text-primary">AI Tools & Agents</span> for Your Business
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Describe your business needs and get personalized AI tool recommendations with 
+            Describe your business needs and get personalized AI tool and agent recommendations with 
             detailed comparisons, pricing, and implementation guides.
           </p>
           <Link href="/input">

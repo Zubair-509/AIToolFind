@@ -1,8 +1,8 @@
-# AI Tools Finder
+# AI Tools & Agents Finder
 
 ## Overview
 
-AI Tools Finder is a full-stack web application that helps users discover the perfect AI tools for their business needs. Users describe their business requirements, and the application provides personalized AI tool recommendations using Google's Gemini AI. The app features a clean, modern interface built with React and shadcn/ui components, backed by an Express.js server with PostgreSQL database support.
+AI Tools & Agents Finder is a full-stack web application that helps users discover the perfect AI tools and AI agents for their business needs. Users describe their business requirements, and the application provides personalized recommendations for both traditional AI tools and modern AI agents (like Replit Agent, Bolt.new, Lovable, v0.dev, etc.) using Google's Gemini AI. The app features a clean, modern interface built with React and shadcn/ui components, backed by an Express.js server with PostgreSQL database support.
 
 ## User Preferences
 
@@ -10,8 +10,11 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Updates
 
-- Updated Gemini API prompt to specifically request 3 paid and 4 unpaid/free AI tools per recommendation
-- Configured system to provide exactly 7 tools total with proper distribution between free/freemium and paid options
+- Expanded scope to include AI agents (Replit Agent, Bolt.new, Lovable, v0.dev, etc.) in addition to traditional AI tools
+- Updated distribution to 5 free/freemium + 4 paid recommendations (9 total)
+- Added retry mechanism to ensure correct number of recommendations
+- Updated UI text throughout app to reflect "AI Tools & Agents" branding
+- Enhanced Gemini API prompt to specifically include AI agents alongside traditional tools
 
 ## System Architecture
 

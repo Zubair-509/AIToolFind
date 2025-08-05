@@ -8,10 +8,10 @@ export function Footer() {
           <div className="md:col-span-2">
             <div className="flex items-center mb-4">
               <Brain className="text-primary text-2xl mr-3" />
-              <h3 className="text-xl font-bold">AI Tools Finder</h3>
+              <h3 className="text-xl font-bold">AI Tools & Agents Finder</h3>
             </div>
             <p className="text-gray-400 mb-4">
-              Discover the perfect AI tools for your business with personalized 
+              Discover the perfect AI tools and agents for your business with personalized 
               recommendations powered by advanced AI analysis.
             </p>
           </div>

@@ -92,9 +92,9 @@ export default function Results() {
     <section className="py-16">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Recommended AI Tools</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">Recommended AI Tools & Agents</h2>
           <p className="text-gray-600 mb-6">
-            Based on your business description, here are the best AI tools for you
+            Based on your business description, here are the best AI tools and agents for you
           </p>
           <div className="flex justify-center space-x-4 flex-wrap gap-2">
             <Button 
@@ -132,7 +132,7 @@ export default function Results() {
           <div className="mb-12">
             <h3 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
               <Gift className="text-green-500 mr-3" />
-              Free & Freemium Tools
+              Free & Freemium Tools & Agents
             </h3>
             <div className="grid md:grid-cols-2 gap-6">
               {freeTools.map((tool, index) => (
@@ -147,7 +147,7 @@ export default function Results() {
           <div className="mb-12">
             <h3 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
               <Crown className="text-yellow-500 mr-3" />
-              Premium Tools
+              Premium Tools & Agents
             </h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {paidTools.map((tool, index) => (
