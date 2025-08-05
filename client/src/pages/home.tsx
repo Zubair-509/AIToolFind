@@ -46,8 +46,8 @@ export default function Home() {
                         [background-position:100%_100%] animate-[neon-shift_8s_ease-in-out_infinite_alternate-reverse]"></div>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(34,211,238,0.1)_0%,transparent_60%)] 
                         animate-[neon-rotate_10s_linear_infinite]"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"></div>
-          <div className="text-center mb-16">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16"></div>
             <h2 className="text-4xl font-bold mb-6 bg-gradient-to-r from-neon-cyan via-neon-purple to-neon-pink bg-clip-text text-transparent">Why Choose AI Tools & Agents Finder?</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               Get curated, up-to-date recommendations tailored to your specific business needs
