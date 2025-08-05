@@ -6,62 +6,63 @@ export default function Home() {
   return (
     <div>
       {/* Landing Section */}
-      <section className="pt-20 pb-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-            Find the Perfect <span className="text-primary">AI Tools & Agents</span> for Your Business
+      <section className="pt-24 pb-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-emerald-50"></div>
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="hero-text mb-8">
+            Find the Perfect AI Tools & Agents for Your Business
           </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground mb-10 max-w-3xl mx-auto leading-relaxed">
             Describe your business needs and get personalized AI tool and agent recommendations with 
             detailed comparisons, pricing, and implementation guides.
           </p>
           <Link href="/input">
             <Button 
-              className="bg-primary text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-primary/90 transform hover:scale-105 transition-all duration-200 shadow-lg"
+              className="btn-primary text-lg shadow-2xl"
               data-testid="button-get-started"
             >
               Get Started - It's Free
-              <ArrowRight className="ml-2 h-5 w-5" />
+              <ArrowRight className="ml-3 h-5 w-5" />
             </Button>
           </Link>
-          <p className="text-sm text-gray-500 mt-4">No signup required • Get instant recommendations</p>
+          <p className="text-sm text-muted-foreground mt-6 font-medium">No signup required • Get instant recommendations</p>
         </div>
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-16 bg-white">
+      <section id="features" className="py-20 bg-gradient-to-b from-white to-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Choose AI Tools Finder?</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-foreground mb-6">Why Choose AI Tools & Agents Finder?</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               Get curated, up-to-date recommendations tailored to your specific business needs
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center p-6">
-              <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Bot className="text-primary text-2xl" />
+            <div className="glass-card p-8 text-center ai-glow rounded-2xl group hover:transform hover:scale-105 transition-all duration-300">
+              <div className="gradient-bg w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Bot className="text-white text-3xl" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">AI-Powered Analysis</h3>
-              <p className="text-gray-600">
-                Advanced AI understands your business context and requirements to suggest the most relevant tools
+              <h3 className="text-2xl font-bold mb-4 text-foreground">AI-Powered Analysis</h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Advanced AI understands your business context and requirements to suggest the most relevant tools and agents
               </p>
             </div>
-            <div className="text-center p-6">
-              <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <ChartLine className="text-primary text-2xl" />
+            <div className="glass-card p-8 text-center ai-glow rounded-2xl group hover:transform hover:scale-105 transition-all duration-300">
+              <div className="gradient-bg w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                <ChartLine className="text-white text-3xl" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Detailed Comparisons</h3>
-              <p className="text-gray-600">
-                Get comprehensive pros, cons, pricing, and fit analysis for each recommended tool
+              <h3 className="text-2xl font-bold mb-4 text-foreground">Detailed Comparisons</h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Get comprehensive pros, cons, pricing, and fit analysis for each recommended tool and agent
               </p>
             </div>
-            <div className="text-center p-6">
-              <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Clock className="text-primary text-2xl" />
+            <div className="glass-card p-8 text-center ai-glow rounded-2xl group hover:transform hover:scale-105 transition-all duration-300">
+              <div className="gradient-bg w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                <Clock className="text-white text-3xl" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Save Time & Money</h3>
-              <p className="text-gray-600">
+              <h3 className="text-2xl font-bold mb-4 text-foreground">Save Time & Money</h3>
+              <p className="text-muted-foreground leading-relaxed">
                 Skip hours of research and avoid costly tool mistakes with expert recommendations
               </p>
             </div>

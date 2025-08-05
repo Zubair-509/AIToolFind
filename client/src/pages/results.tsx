@@ -231,13 +231,14 @@ export default function Results() {
 
   if (!results) {
     return (
-      <div className="py-16">
+      <div className="py-20 min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-emerald-50 flex items-center justify-center">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="bg-white rounded-2xl shadow-xl p-12">
-            <h3 className="text-xl font-semibold text-gray-900 mb-3">No recommendations found</h3>
-            <p className="text-gray-600 mb-6">Please go back and describe your business needs.</p>
+          <div className="glass-card ai-glow rounded-3xl p-16">
+            <Sparkles className="h-16 w-16 text-primary mx-auto mb-6" />
+            <h3 className="text-3xl font-bold text-foreground mb-4">No recommendations found</h3>
+            <p className="text-xl text-muted-foreground mb-8 leading-relaxed">Please go back and describe your business needs.</p>
             <Link href="/input">
-              <Button className="bg-primary text-white px-6 py-3 rounded-lg" data-testid="button-go-back">
+              <Button className="btn-primary text-lg py-4 px-8" data-testid="button-go-back">
                 Start Over
               </Button>
             </Link>
@@ -248,38 +249,41 @@ export default function Results() {
   }
 
   return (
-    <section className="py-16">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Recommended AI Tools & Agents</h2>
-          <p className="text-gray-600 mb-6">
-            Based on your business description, here are the best AI tools and agents for you
+    <section className="py-20 min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-emerald-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <Sparkles className="h-10 w-10 text-primary" />
+            <h2 className="hero-text text-5xl">AI Tools & Agents for You</h2>
+          </div>
+          <p className="text-2xl text-muted-foreground mb-10 max-w-4xl mx-auto leading-relaxed">
+            Based on your business description, here are the best AI tools and agents perfectly matched to your needs
           </p>
-          <div className="flex justify-center space-x-4 flex-wrap gap-2">
+          <div className="flex justify-center flex-wrap gap-4">
             <Button 
               onClick={handleExport}
-              className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors"
+              className="btn-primary text-lg py-4 px-6"
               data-testid="button-export-results"
             >
-              <Download className="mr-2 h-4 w-4" />
+              <Download className="mr-3 h-5 w-5" />
               Export as PDF
             </Button>
             <Button 
               onClick={handleShare}
               variant="outline"
-              className="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors"
+              className="glass-card border-2 border-primary/20 text-primary px-6 py-4 text-lg font-semibold hover:bg-primary hover:text-white transition-all duration-200"
               data-testid="button-share-results"
             >
-              <Share className="mr-2 h-4 w-4" />
+              <Share className="mr-3 h-5 w-5" />
               Share
             </Button>
             <Link href="/input">
               <Button 
                 variant="outline"
-                className="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors"
+                className="glass-card border-2 border-accent/20 text-accent px-6 py-4 text-lg font-semibold hover:bg-accent hover:text-white transition-all duration-200"
                 data-testid="button-new-search"
               >
-                <Plus className="mr-2 h-4 w-4" />
+                <Plus className="mr-3 h-5 w-5" />
                 New Search
               </Button>
             </Link>
@@ -288,12 +292,15 @@ export default function Results() {
 
         {/* Free Tools Section */}
         {freeTools.length > 0 && (
-          <div className="mb-12">
-            <h3 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
-              <Gift className="text-green-500 mr-3" />
-              Free & Freemium Tools & Agents
-            </h3>
-            <div className="grid md:grid-cols-2 gap-6">
+          <div className="mb-16">
+            <div className="text-center mb-12">
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <Gift className="h-8 w-8 text-emerald-600" />
+                <h3 className="text-4xl font-bold text-foreground">Free & Freemium Tools & Agents</h3>
+              </div>
+              <p className="text-lg text-muted-foreground">Get started with these powerful free options</p>
+            </div>
+            <div className="grid lg:grid-cols-2 gap-8">
               {freeTools.map((tool, index) => (
                 <ToolCard key={index} tool={tool} isPaid={false} />
               ))}
@@ -303,12 +310,15 @@ export default function Results() {
 
         {/* Paid Tools Section */}
         {paidTools.length > 0 && (
-          <div className="mb-12">
-            <h3 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
-              <Crown className="text-yellow-500 mr-3" />
-              Premium Tools & Agents
-            </h3>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="mb-16">
+            <div className="text-center mb-12">
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <Crown className="h-8 w-8 text-amber-500" />
+                <h3 className="text-4xl font-bold text-foreground">Premium Tools & Agents</h3>
+              </div>
+              <p className="text-lg text-muted-foreground">Investment-grade solutions for scaling your business</p>
+            </div>
+            <div className="grid lg:grid-cols-2 gap-8">
               {paidTools.map((tool, index) => (
                 <ToolCard key={index} tool={tool} isPaid={true} />
               ))}
@@ -317,19 +327,19 @@ export default function Results() {
         )}
 
         {/* Action Plan Section */}
-        <div className="mt-12 bg-gradient-to-r from-primary/5 to-purple-50 rounded-2xl p-8">
-          <h3 className="text-2xl font-semibold text-gray-900 mb-4 flex items-center">
-            <Sparkles className="text-primary mr-3" />
-            Generate Your Action Plan
-          </h3>
-          <p className="text-gray-600 mb-6">
+        <div className="glass-card ai-glow rounded-3xl p-12 text-center">
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <Sparkles className="h-10 w-10 text-primary" />
+            <h3 className="text-4xl font-bold text-foreground">Ready to Get Started?</h3>
+          </div>
+          <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
             Get a step-by-step implementation plan for using these AI tools to achieve your business goals.
           </p>
           <Button 
-            className="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors"
+            className="btn-primary text-xl py-6 px-10"
             data-testid="button-generate-action-plan"
           >
-            <Sparkles className="mr-2 h-4 w-4" />
+            <Sparkles className="mr-3 h-6 w-6" />
             Generate Action Plan
           </Button>
         </div>
