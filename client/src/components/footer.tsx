@@ -1,32 +1,5 @@
-import { Brain, Sparkles } from "lucide-react";
 
-export function Footer() {
-  return (
-    <footer className="glass-card border-t border-border/20 mt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          <div className="flex items-center gap-3 mb-4 md:mb-0">
-            <div className="gradient-bg p-2 rounded-xl">
-              <Brain className="text-white h-6 w-6" />
-            </div>
-            <span className="text-lg font-semibold bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
-              AI Tools & Agents Finder
-            </span>
-          </div>
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2 text-sm text-gray-400">
-              <Sparkles className="h-4 w-4 text-purple-400" />
-              <span>Powered by AI</span>
-            </div>
-            <div className="text-sm text-gray-400">
-              © 2024 AI Tools Finder. All rights reserved.
-            </div>
-          </div>
-        </div>
-      </div>
-    </footer>
-  );
-}
+import { Brain, Sparkles } from "lucide-react";
 
 export function Footer() {
   return (
