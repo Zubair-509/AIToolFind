@@ -26,6 +26,9 @@ Preferred communication style: Simple, everyday language.
 - Added multi-provider AI support with OpenAI, Anthropic, xAI, and Gemini APIs
 - Enhanced PDF export with smart content fitting and page management
 - Added provider fallback system for reliable AI recommendations
+- Added functional model selection dropdown allowing users to choose preferred AI provider
+- Implemented smart fallback system that switches from failed providers (e.g. Deepseek R1 credit issues) to working ones (Gemini)
+- Enhanced UI with real-time provider availability indicators and "Auto-select" option
 
 ## System Architecture
 

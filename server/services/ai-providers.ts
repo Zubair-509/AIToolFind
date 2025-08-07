@@ -417,7 +417,12 @@ export class AIService {
     let provider: AIProvider | null = null;
     
     if (preferredProvider && preferredProvider !== "auto") {
-      provider = availableProviders.find(p => p.name.toLowerCase().includes(preferredProvider.toLowerCase()));
+      // Handle different provider name formats
+      const normalizedPreference = preferredProvider.toLowerCase().replace(/-/g, ' ');
+      provider = availableProviders.find(p => 
+        p.name.toLowerCase().includes(normalizedPreference) ||
+        p.name.toLowerCase().replace(/\s+/g, '-') === preferredProvider.toLowerCase()
+      ) || null;
     }
     
     // Fallback to first available provider if no preference or preferred not found
@@ -425,7 +430,7 @@ export class AIService {
       provider = availableProviders[0];
     }
 
-    const maxRetries = 3;
+    let maxRetries = 3;
     let lastError: Error | null = null;
     
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
@@ -460,8 +465,9 @@ export class AIService {
           const currentIndex = availableProviders.indexOf(provider);
           if (currentIndex < availableProviders.length - 1) {
             provider = availableProviders[currentIndex + 1];
-            console.log(`Switching to ${provider.name} AI as fallback`);
+            console.log(`${availableProviders[currentIndex].name} failed. Switching to ${provider.name} AI as fallback`);
             attempt = 0; // Reset attempts for new provider
+            maxRetries = 2; // Reduce retries for fallback providers
           }
         }
       }

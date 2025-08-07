@@ -178,7 +178,7 @@ For example: I'm starting a clothing brand and need help with social media marke
                     {providersData?.providers.map((provider) => (
                       <SelectItem 
                         key={provider.name} 
-                        value={provider.name.toLowerCase()}
+                        value={provider.name.toLowerCase().replace(/\s+/g, '-')}
                         className="text-lg font-light"
                         disabled={!provider.available}
                       >

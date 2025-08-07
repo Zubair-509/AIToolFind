@@ -47,10 +47,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get available AI providers
   app.get("/api/providers", async (req, res) => {
     try {
-      const availableProviders = aiService.getAvailableProviders();
+      const allProviders = [
+        { name: "Gemini", available: !!process.env.GEMINI_API_KEY },
+        { name: "Deepseek R1", available: !!process.env.OPENROUTER_API_KEY },
+        { name: "OpenAI", available: !!process.env.OPENAI_API_KEY },
+        { name: "Anthropic", available: !!process.env.ANTHROPIC_API_KEY },
+        { name: "xAI Grok", available: !!process.env.XAI_API_KEY },
+      ];
+      
+      const availableCount = allProviders.filter(p => p.available).length;
+      
       res.json({ 
-        providers: availableProviders.map(p => ({ name: p.name, available: p.isAvailable() })),
-        count: availableProviders.length
+        providers: allProviders,
+        count: availableCount
       });
     } catch (error) {
       console.error("Error getting providers:", error);
