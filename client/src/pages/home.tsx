@@ -10,20 +10,21 @@ export default function Home() {
       <section className="section-padding relative overflow-hidden">
         <div className="container">
           {/* Floating Elements */}
-          <div className="absolute top-20 left-10 w-2 h-2 bg-white/20 rounded-full floating-element"></div>
-          <div className="absolute top-40 right-16 w-1 h-1 bg-white/30 rounded-full floating-element" style={{ animationDelay: '2s' }}></div>
-          <div className="absolute bottom-32 left-20 w-1.5 h-1.5 bg-white/25 rounded-full floating-element" style={{ animationDelay: '4s' }}></div>
+          <div className="absolute top-20 left-10 w-3 h-3 gradient-bg rounded-full floating-element opacity-20"></div>
+          <div className="absolute top-40 right-16 w-2 h-2 gradient-bg rounded-full floating-element opacity-30" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute bottom-32 left-20 w-2.5 h-2.5 gradient-bg rounded-full floating-element opacity-25" style={{ animationDelay: '4s' }}></div>
+          <div className="absolute top-32 right-32 w-1.5 h-1.5 gradient-bg rounded-full floating-element opacity-35" style={{ animationDelay: '6s' }}></div>
           
           <div className="text-center max-w-4xl mx-auto">
             <div className="fade-in">
-              <h1 className="gradient-text mb-8">
+              <h1 className="gradient-text mb-8 leading-tight">
                 Find Perfect AI Tools<br />
                 <span className="accent-gradient">Built for Your Business</span>
               </h1>
             </div>
             
             <div className="fade-in stagger-2">
-              <p className="text-large mb-12 max-w-2xl mx-auto">
+              <p className="text-large mb-12 max-w-3xl mx-auto">
                 Get personalized AI tool recommendations with detailed analysis, 
                 pricing comparisons, and implementation guides. No signup required.
               </p>
@@ -31,15 +32,15 @@ export default function Home() {
             
             <div className="fade-in stagger-3">
               <Link href="/input">
-                <Button className="btn-primary text-lg group">
-                  Start Discovery
-                  <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                <Button className="btn-primary text-lg group relative overflow-hidden">
+                  <span className="relative z-10">Start Discovery</span>
+                  <ArrowRight className="ml-3 h-5 w-5 transition-transform duration-500 group-hover:translate-x-1 relative z-10" />
                 </Button>
               </Link>
             </div>
             
             <div className="fade-in stagger-4">
-              <p className="mono text-sm text-muted-foreground mt-8">
+              <p className="mono text-sm text-muted-foreground mt-8 font-light">
                 // Instant • Free • No Registration
               </p>
             </div>
