@@ -1,3 +1,4 @@
+import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Brain, Menu } from "lucide-react";
 import { Link } from "wouter";

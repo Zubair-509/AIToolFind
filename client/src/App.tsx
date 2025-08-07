@@ -14,7 +14,7 @@ import Privacy from "@/pages/privacy";
 import NotFound from "@/pages/not-found";
 import SignIn from "@/pages/signin";
 import SignUp from "@/pages/signup";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider } from "./contexts/auth";
 
 function Router() {
   return (
