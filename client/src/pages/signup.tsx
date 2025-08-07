@@ -1,7 +1,6 @@
 
 import { useState } from "react";
-import { Link, useLocation } from "wouter";
-import { useAuth } from "@/contexts/auth";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -34,9 +33,6 @@ export default function SignUp() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [error, setError] = useState<string>("");
-  const { signup } = useAuth();
-  const [, setLocation] = useLocation();
 
   const form = useForm<SignUpForm>({
     resolver: zodResolver(signUpSchema),
@@ -51,12 +47,13 @@ export default function SignUp() {
 
   const onSubmit = async (data: SignUpForm) => {
     setIsSubmitting(true);
-    setError("");
     try {
-      await signup(data.name, data.email, data.password);
-      setLocation("/");
+      // TODO: Implement sign up logic
+      console.log("Sign up data:", data);
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000));
     } catch (error) {
-      setError(error instanceof Error ? error.message : "Failed to create account");
+      console.error("Sign up error:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -102,12 +99,6 @@ export default function SignUp() {
                   Create your account to discover perfect AI tools
                 </p>
               </div>
-
-              {error && (
-                <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 mb-6">
-                  <p className="text-red-400 text-sm">{error}</p>
-                </div>
-              )}
 
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">

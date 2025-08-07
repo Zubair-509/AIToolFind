@@ -14,7 +14,6 @@ import Privacy from "@/pages/privacy";
 import NotFound from "@/pages/not-found";
 import SignIn from "@/pages/signin";
 import SignUp from "@/pages/signup";
-import { AuthProvider } from "./context/AuthContext";
 
 function Router() {
   return (
@@ -35,18 +34,16 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <TooltipProvider>
-          <div className="min-h-screen bg-background text-foreground">
-            <Header />
-            <main className="flex-1">
-              <Router />
-            </main>
-            <Footer />
-            <Toaster />
-          </div>
-        </TooltipProvider>
-      </AuthProvider>
+      <TooltipProvider>
+        <div className="min-h-screen flex flex-col">
+          <Header />
+          <main className="flex-1 relative">
+            <Router />
+          </main>
+          <Footer />
+        </div>
+        <Toaster />
+      </TooltipProvider>
     </QueryClientProvider>
   );
 }
