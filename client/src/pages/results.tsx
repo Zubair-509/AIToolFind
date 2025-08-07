@@ -46,7 +46,124 @@ export default function Results() {
       const pageWidth = pdf.internal.pageSize.getWidth();
       const pageHeight = pdf.internal.pageSize.getHeight();
       const margin = 20;
+      const bottomMargin = 25; // Larger bottom margin to prevent cut-offs
+      const usableHeight = pageHeight - margin - bottomMargin;
       let yPosition = margin;
+      
+      // Helper function to calculate content height for a tool
+      const calculateToolHeight = (tool: any) => {
+        let height = 0;
+        
+        // Tool name
+        height += 10;
+        
+        // Purpose
+        const purposeLines = pdf.splitTextToSize(tool.purpose, pageWidth - 2 * margin);
+        height += purposeLines.length * 5 + 5;
+        
+        // Pros
+        height += 8; // "Pros:" heading
+        tool.pros.forEach((pro: string) => {
+          const proLines = pdf.splitTextToSize(`• ${pro}`, pageWidth - 2 * margin - 5);
+          height += proLines.length * 4 + 1;
+        });
+        height += 5;
+        
+        // Cons
+        height += 8; // "Cons:" heading
+        tool.cons.forEach((con: string) => {
+          const conLines = pdf.splitTextToSize(`• ${con}`, pageWidth - 2 * margin - 5);
+          height += conLines.length * 4 + 1;
+        });
+        height += 5;
+        
+        // Why it fits
+        height += 8; // "Why it's perfect for you:" heading
+        const whyFitLines = pdf.splitTextToSize(tool.why_fit, pageWidth - 2 * margin);
+        height += whyFitLines.length * 5 + 10; // Extra spacing after tool
+        
+        return height;
+      };
+      
+      // Helper function to add a tool to PDF
+      const addToolToPdf = (tool: any, index: number) => {
+        const requiredHeight = calculateToolHeight(tool);
+        
+        // Check if tool fits on current page
+        if (yPosition + requiredHeight > usableHeight && yPosition > margin + 20) {
+          pdf.addPage();
+          yPosition = margin;
+        }
+        
+        // Tool name
+        pdf.setFontSize(14);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text(`${index + 1}. ${tool.tool_name} (${tool.pricing})`, margin, yPosition);
+        yPosition += 10;
+        
+        // Purpose
+        pdf.setFontSize(11);
+        pdf.setFont('helvetica', 'normal');
+        const purposeLines = pdf.splitTextToSize(tool.purpose, pageWidth - 2 * margin);
+        pdf.text(purposeLines, margin, yPosition);
+        yPosition += purposeLines.length * 5 + 5;
+        
+        // Pros
+        pdf.setFont('helvetica', 'bold');
+        pdf.text('Pros:', margin, yPosition);
+        yPosition += 6;
+        pdf.setFont('helvetica', 'normal');
+        tool.pros.forEach((pro: string) => {
+          // Check if individual pro needs a new page
+          const proLines = pdf.splitTextToSize(`• ${pro}`, pageWidth - 2 * margin - 5);
+          if (yPosition + proLines.length * 4 > usableHeight) {
+            pdf.addPage();
+            yPosition = margin;
+          }
+          pdf.text(proLines, margin + 5, yPosition);
+          yPosition += proLines.length * 4 + 1;
+        });
+        yPosition += 4;
+        
+        // Cons
+        if (yPosition + 15 > usableHeight) {
+          pdf.addPage();
+          yPosition = margin;
+        }
+        pdf.setFont('helvetica', 'bold');
+        pdf.text('Cons:', margin, yPosition);
+        yPosition += 6;
+        pdf.setFont('helvetica', 'normal');
+        tool.cons.forEach((con: string) => {
+          // Check if individual con needs a new page
+          const conLines = pdf.splitTextToSize(`• ${con}`, pageWidth - 2 * margin - 5);
+          if (yPosition + conLines.length * 4 > usableHeight) {
+            pdf.addPage();
+            yPosition = margin;
+          }
+          pdf.text(conLines, margin + 5, yPosition);
+          yPosition += conLines.length * 4 + 1;
+        });
+        yPosition += 4;
+        
+        // Why it fits
+        if (yPosition + 20 > usableHeight) {
+          pdf.addPage();
+          yPosition = margin;
+        }
+        pdf.setFont('helvetica', 'bold');
+        pdf.text('Why it\'s perfect for you:', margin, yPosition);
+        yPosition += 6;
+        pdf.setFont('helvetica', 'normal');
+        const whyFitLines = pdf.splitTextToSize(tool.why_fit, pageWidth - 2 * margin);
+        // Check if "why fit" content needs a new page
+        if (yPosition + whyFitLines.length * 5 > usableHeight) {
+          pdf.addPage();
+          yPosition = margin;
+        }
+        pdf.text(whyFitLines, margin, yPosition);
+        yPosition += whyFitLines.length * 5 + 12;
+      };
       
       // Title
       pdf.setFontSize(24);
@@ -58,136 +175,43 @@ export default function Results() {
       pdf.setFontSize(12);
       pdf.setFont('helvetica', 'normal');
       pdf.text(`Generated on: ${new Date().toLocaleDateString()}`, margin, yPosition);
-      yPosition += 15;
+      yPosition += 20;
       
       // Free Tools Section
       if (freeTools.length > 0) {
+        // Check if section header fits
+        if (yPosition + 15 > usableHeight) {
+          pdf.addPage();
+          yPosition = margin;
+        }
+        
         pdf.setFontSize(18);
         pdf.setFont('helvetica', 'bold');
         pdf.text('Free & Freemium Tools & Agents', margin, yPosition);
-        yPosition += 10;
+        yPosition += 15;
         
         freeTools.forEach((tool, index) => {
-          // Check if we need a new page
-          if (yPosition > pageHeight - 60) {
-            pdf.addPage();
-            yPosition = margin;
-          }
-          
-          // Tool name
-          pdf.setFontSize(14);
-          pdf.setFont('helvetica', 'bold');
-          pdf.text(`${index + 1}. ${tool.tool_name} (${tool.pricing})`, margin, yPosition);
-          yPosition += 8;
-          
-          // Purpose
-          pdf.setFontSize(11);
-          pdf.setFont('helvetica', 'normal');
-          const purposeLines = pdf.splitTextToSize(tool.purpose, pageWidth - 2 * margin);
-          pdf.text(purposeLines, margin, yPosition);
-          yPosition += purposeLines.length * 5 + 3;
-          
-          // Pros
-          pdf.setFont('helvetica', 'bold');
-          pdf.text('Pros:', margin, yPosition);
-          yPosition += 5;
-          pdf.setFont('helvetica', 'normal');
-          tool.pros.forEach((pro) => {
-            const proLines = pdf.splitTextToSize(`• ${pro}`, pageWidth - 2 * margin - 5);
-            pdf.text(proLines, margin + 5, yPosition);
-            yPosition += proLines.length * 4;
-          });
-          yPosition += 3;
-          
-          // Cons
-          pdf.setFont('helvetica', 'bold');
-          pdf.text('Cons:', margin, yPosition);
-          yPosition += 5;
-          pdf.setFont('helvetica', 'normal');
-          tool.cons.forEach((con) => {
-            const conLines = pdf.splitTextToSize(`• ${con}`, pageWidth - 2 * margin - 5);
-            pdf.text(conLines, margin + 5, yPosition);
-            yPosition += conLines.length * 4;
-          });
-          yPosition += 3;
-          
-          // Why it fits
-          pdf.setFont('helvetica', 'bold');
-          pdf.text('Why it\'s perfect for you:', margin, yPosition);
-          yPosition += 5;
-          pdf.setFont('helvetica', 'normal');
-          const whyFitLines = pdf.splitTextToSize(tool.why_fit, pageWidth - 2 * margin);
-          pdf.text(whyFitLines, margin, yPosition);
-          yPosition += whyFitLines.length * 5 + 8;
+          addToolToPdf(tool, index);
         });
       }
       
       // Paid Tools Section
       if (paidTools.length > 0) {
         // Check if we need a new page for paid tools section
-        if (yPosition > pageHeight - 100) {
+        if (yPosition + 25 > usableHeight) {
           pdf.addPage();
           yPosition = margin;
+        } else {
+          yPosition += 5;
         }
         
-        yPosition += 10;
         pdf.setFontSize(18);
         pdf.setFont('helvetica', 'bold');
         pdf.text('Premium Tools & Agents', margin, yPosition);
-        yPosition += 10;
+        yPosition += 15;
         
         paidTools.forEach((tool, index) => {
-          // Check if we need a new page
-          if (yPosition > pageHeight - 60) {
-            pdf.addPage();
-            yPosition = margin;
-          }
-          
-          // Tool name
-          pdf.setFontSize(14);
-          pdf.setFont('helvetica', 'bold');
-          pdf.text(`${index + 1}. ${tool.tool_name} (${tool.pricing})`, margin, yPosition);
-          yPosition += 8;
-          
-          // Purpose
-          pdf.setFontSize(11);
-          pdf.setFont('helvetica', 'normal');
-          const purposeLines = pdf.splitTextToSize(tool.purpose, pageWidth - 2 * margin);
-          pdf.text(purposeLines, margin, yPosition);
-          yPosition += purposeLines.length * 5 + 3;
-          
-          // Pros
-          pdf.setFont('helvetica', 'bold');
-          pdf.text('Pros:', margin, yPosition);
-          yPosition += 5;
-          pdf.setFont('helvetica', 'normal');
-          tool.pros.forEach((pro) => {
-            const proLines = pdf.splitTextToSize(`• ${pro}`, pageWidth - 2 * margin - 5);
-            pdf.text(proLines, margin + 5, yPosition);
-            yPosition += proLines.length * 4;
-          });
-          yPosition += 3;
-          
-          // Cons
-          pdf.setFont('helvetica', 'bold');
-          pdf.text('Cons:', margin, yPosition);
-          yPosition += 5;
-          pdf.setFont('helvetica', 'normal');
-          tool.cons.forEach((con) => {
-            const conLines = pdf.splitTextToSize(`• ${con}`, pageWidth - 2 * margin - 5);
-            pdf.text(conLines, margin + 5, yPosition);
-            yPosition += conLines.length * 4;
-          });
-          yPosition += 3;
-          
-          // Why it fits
-          pdf.setFont('helvetica', 'bold');
-          pdf.text('Why it\'s perfect for you:', margin, yPosition);
-          yPosition += 5;
-          pdf.setFont('helvetica', 'normal');
-          const whyFitLines = pdf.splitTextToSize(tool.why_fit, pageWidth - 2 * margin);
-          pdf.text(whyFitLines, margin, yPosition);
-          yPosition += whyFitLines.length * 5 + 8;
+          addToolToPdf(tool, index);
         });
       }
       
