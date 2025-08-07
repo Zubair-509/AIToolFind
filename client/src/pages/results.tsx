@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ToolCard } from "@/components/tool-card";
-import { Download, Share, Plus, Gift, Crown, Sparkles } from "lucide-react";
+import { Download, Share, Plus, Gift, Crown, Sparkles, Search } from "lucide-react";
 import { Link } from "wouter";
 import type { AITool } from "@shared/schema";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import { motion } from "framer-motion";
 
 interface RecommendationResults {
   id: string;
@@ -231,14 +232,14 @@ export default function Results() {
 
   if (!results) {
     return (
-      <div className="py-20 min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-emerald-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 flex items-center justify-center">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="glass-card ai-glow rounded-3xl p-16">
-            <Sparkles className="h-16 w-16 text-primary mx-auto mb-6" />
-            <h3 className="text-3xl font-bold text-foreground mb-4">No recommendations found</h3>
-            <p className="text-xl text-muted-foreground mb-8 leading-relaxed">Please go back and describe your business needs.</p>
+          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-16">
+            <Sparkles className="h-16 w-16 text-purple-400 mx-auto mb-6" />
+            <h3 className="text-3xl font-bold text-white mb-4">No recommendations found</h3>
+            <p className="text-xl text-gray-300 mb-8 leading-relaxed">Please go back and describe your business needs.</p>
             <Link href="/input">
-              <Button className="btn-primary text-lg py-4 px-8" data-testid="button-go-back">
+              <Button className="bg-gradient-to-r from-purple-600 to-emerald-600 hover:from-purple-700 hover:to-emerald-700 text-white border-0 rounded-full px-8 py-4 text-lg font-medium" data-testid="button-go-back">
                 Start Over
               </Button>
             </Link>
@@ -249,101 +250,147 @@ export default function Results() {
   }
 
   return (
-    <section className="py-20 min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-emerald-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <Sparkles className="h-10 w-10 text-primary" />
-            <h2 className="hero-text text-5xl">AI Tools & Agents for You</h2>
-          </div>
-          <p className="text-2xl text-muted-foreground mb-10 max-w-4xl mx-auto leading-relaxed">
-            Based on your business description, here are the best AI tools and agents perfectly matched to your needs
-          </p>
-          <div className="flex justify-center flex-wrap gap-4">
-            <Button 
-              onClick={handleExport}
-              className="btn-primary text-lg py-4 px-6"
-              data-testid="button-export-results"
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+      </div>
+
+      <div className="relative z-10">
+        {/* Header Section */}
+        <motion.section 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="pt-12 pb-8 px-4 sm:px-6 lg:px-8"
+        >
+          <div className="max-w-6xl mx-auto text-center">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="mb-8"
             >
-              <Download className="mr-3 h-5 w-5" />
-              Export as PDF
-            </Button>
-            <Button 
-              onClick={handleShare}
-              variant="outline"
-              className="glass-card border-2 border-primary/20 text-primary px-6 py-4 text-lg font-semibold hover:bg-primary hover:text-white transition-all duration-200"
-              data-testid="button-share-results"
+              <h1 className="text-4xl md:text-6xl font-light text-white mb-6 tracking-tight">
+                Based on your business description, here are the best AI tools and agents
+                <br />
+                <span className="bg-gradient-to-r from-purple-400 to-emerald-400 bg-clip-text text-transparent font-normal">
+                  perfectly matched to your needs
+                </span>
+              </h1>
+            </motion.div>
+            
+            {/* Action Buttons */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="flex justify-center flex-wrap gap-4 mb-12"
             >
-              <Share className="mr-3 h-5 w-5" />
-              Share
-            </Button>
-            <Link href="/input">
               <Button 
-                variant="outline"
-                className="glass-card border-2 border-accent/20 text-accent px-6 py-4 text-lg font-semibold hover:bg-accent hover:text-white transition-all duration-200"
-                data-testid="button-new-search"
+                onClick={handleExport}
+                className="bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm rounded-full px-6 py-3 font-medium transition-all duration-300 hover:scale-105"
+                data-testid="button-export-results"
               >
-                <Plus className="mr-3 h-5 w-5" />
-                New Search
+                <Download className="mr-2 h-4 w-4" />
+                Export as PDF
               </Button>
-            </Link>
+              <Button 
+                onClick={handleShare}
+                className="bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm rounded-full px-6 py-3 font-medium transition-all duration-300 hover:scale-105"
+                data-testid="button-share-results"
+              >
+                <Share className="mr-2 h-4 w-4" />
+                Share
+              </Button>
+              <Link href="/input">
+                <Button 
+                  className="bg-gradient-to-r from-purple-600 to-emerald-600 hover:from-purple-700 hover:to-emerald-700 text-white border-0 rounded-full px-6 py-3 font-medium transition-all duration-300 hover:scale-105"
+                  data-testid="button-new-search"
+                >
+                  <Search className="mr-2 h-4 w-4" />
+                  New Search
+                </Button>
+              </Link>
+            </motion.div>
           </div>
-        </div>
+        </motion.section>
 
         {/* Free Tools Section */}
         {freeTools.length > 0 && (
-          <div className="mb-16">
-            <div className="text-center mb-12">
-              <div className="flex items-center justify-center gap-3 mb-4">
-                <Gift className="h-8 w-8 text-emerald-600" />
-                <h3 className="text-4xl font-bold text-foreground">Free & Freemium Tools & Agents</h3>
+          <motion.section 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="px-4 sm:px-6 lg:px-8 mb-16"
+          >
+            <div className="max-w-6xl mx-auto">
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.8 }}
+                className="text-center mb-12"
+              >
+                <div className="inline-flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-6 py-3 mb-6">
+                  <Gift className="h-5 w-5 text-emerald-400" />
+                  <span className="text-emerald-400 font-medium">Get started with these powerful free options</span>
+                </div>
+              </motion.div>
+              <div className="grid lg:grid-cols-2 gap-6">
+                {freeTools.map((tool, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 1.0 + index * 0.1 }}
+                  >
+                    <ToolCard tool={tool} isPaid={false} />
+                  </motion.div>
+                ))}
               </div>
-              <p className="text-lg text-muted-foreground">Get started with these powerful free options</p>
             </div>
-            <div className="grid lg:grid-cols-2 gap-8">
-              {freeTools.map((tool, index) => (
-                <ToolCard key={index} tool={tool} isPaid={false} />
-              ))}
-            </div>
-          </div>
+          </motion.section>
         )}
 
         {/* Paid Tools Section */}
         {paidTools.length > 0 && (
-          <div className="mb-16">
-            <div className="text-center mb-12">
-              <div className="flex items-center justify-center gap-3 mb-4">
-                <Crown className="h-8 w-8 text-amber-500" />
-                <h3 className="text-4xl font-bold text-foreground">Premium Tools & Agents</h3>
+          <motion.section 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 1.2 }}
+            className="px-4 sm:px-6 lg:px-8 mb-16"
+          >
+            <div className="max-w-6xl mx-auto">
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 1.4 }}
+                className="text-center mb-12"
+              >
+                <div className="inline-flex items-center gap-3 bg-amber-500/10 border border-amber-500/20 rounded-full px-6 py-3 mb-6">
+                  <Crown className="h-5 w-5 text-amber-400" />
+                  <span className="text-amber-400 font-medium">Investment-grade solutions for scaling your business</span>
+                </div>
+              </motion.div>
+              <div className="grid lg:grid-cols-2 gap-6">
+                {paidTools.map((tool, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 1.6 + index * 0.1 }}
+                  >
+                    <ToolCard tool={tool} isPaid={true} />
+                  </motion.div>
+                ))}
               </div>
-              <p className="text-lg text-muted-foreground">Investment-grade solutions for scaling your business</p>
             </div>
-            <div className="grid lg:grid-cols-2 gap-8">
-              {paidTools.map((tool, index) => (
-                <ToolCard key={index} tool={tool} isPaid={true} />
-              ))}
-            </div>
-          </div>
+          </motion.section>
         )}
 
-        {/* Action Plan Section */}
-        <div className="glass-card ai-glow rounded-3xl p-12 text-center">
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <Sparkles className="h-10 w-10 text-primary" />
-            <h3 className="text-4xl font-bold text-foreground">Ready to Get Started?</h3>
-          </div>
-          <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed">
-            Get a step-by-step implementation plan for using these AI tools to achieve your business goals.
-          </p>
-          <Button 
-            className="btn-primary text-xl py-6 px-10"
-            data-testid="button-generate-action-plan"
-          >
-            <Sparkles className="mr-3 h-6 w-6" />
-            Generate Action Plan
-          </Button>
-        </div>
       </div>
-    </section>
+    </div>
   );
 }

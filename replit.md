@@ -20,6 +20,9 @@ Preferred communication style: Simple, everyday language.
 - Updated UI text throughout app to reflect "AI Tools & Agents" branding
 - Rebranded application name to "AI ToolPilot" as requested by user
 - Enhanced Gemini API prompt to specifically include AI agents alongside traditional tools
+- Redesigned results page with modern dark theme, smooth animations, and glass morphism effects
+- Improved mobile and desktop responsiveness with optimized card layouts
+- Enhanced tool cards with gradient borders, hover animations, and better visual hierarchy
 
 ## System Architecture
 
