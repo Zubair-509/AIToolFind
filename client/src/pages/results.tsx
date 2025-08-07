@@ -250,12 +250,25 @@ export default function Results() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 relative overflow-hidden">
-      {/* Animated background elements */}
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 relative overflow-hidden">
+      {/* Stellar particle background */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+        {/* Animated floating particles */}
+        <div className="absolute top-[10%] left-[15%] w-1 h-1 bg-white/60 rounded-full animate-pulse"></div>
+        <div className="absolute top-[25%] left-[80%] w-0.5 h-0.5 bg-blue-300/40 rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-[40%] left-[30%] w-1.5 h-1.5 bg-purple-400/50 rounded-full animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-[60%] left-[70%] w-0.5 h-0.5 bg-emerald-300/60 rounded-full animate-pulse" style={{ animationDelay: '3s' }}></div>
+        <div className="absolute top-[80%] left-[20%] w-1 h-1 bg-white/50 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+        <div className="absolute top-[15%] left-[60%] w-0.5 h-0.5 bg-pink-300/40 rounded-full animate-pulse" style={{ animationDelay: '1.5s' }}></div>
+        <div className="absolute top-[35%] left-[85%] w-1 h-1 bg-cyan-300/50 rounded-full animate-pulse" style={{ animationDelay: '2.5s' }}></div>
+        <div className="absolute top-[55%] left-[10%] w-0.5 h-0.5 bg-yellow-300/40 rounded-full animate-pulse" style={{ animationDelay: '3.5s' }}></div>
+        <div className="absolute top-[75%] left-[90%] w-1.5 h-1.5 bg-indigo-400/50 rounded-full animate-pulse" style={{ animationDelay: '4s' }}></div>
+        <div className="absolute top-[5%] left-[45%] w-0.5 h-0.5 bg-white/40 rounded-full animate-pulse" style={{ animationDelay: '4.5s' }}></div>
+        
+        {/* Larger glowing orbs */}
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-emerald-500/3 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
       </div>
 
       <div className="relative z-10">

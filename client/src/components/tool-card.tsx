@@ -20,7 +20,7 @@ export function ToolCard({ tool, isPaid = false }: ToolCardProps) {
     : "from-emerald-500/5 to-blue-500/5";
 
   return (
-    <div className={`bg-gradient-to-br ${cardGradient} bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl group relative overflow-hidden`}>
+    <div className={`bg-gradient-to-br ${cardGradient} bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl group relative overflow-hidden h-full flex flex-col`}>
       {/* Animated gradient border */}
       <div className="absolute inset-0 rounded-2xl p-[1px] bg-gradient-to-r from-purple-500/20 via-emerald-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         <div className="h-full w-full rounded-2xl bg-slate-900"></div>
@@ -77,7 +77,7 @@ export function ToolCard({ tool, isPaid = false }: ToolCardProps) {
           </div>
         </div>
         
-        <div className="bg-white/5 border border-white/10 rounded-xl p-4 mb-6">
+        <div className="bg-white/5 border border-white/10 rounded-xl p-4 mb-6 flex-grow">
           <div className="flex items-start gap-2 mb-3">
             <Star className="h-4 w-4 text-amber-400 mt-0.5" />
             <h5 className="font-semibold text-amber-300 text-sm uppercase tracking-wide">Perfect For You</h5>
@@ -88,7 +88,7 @@ export function ToolCard({ tool, isPaid = false }: ToolCardProps) {
         </div>
         
         <Button 
-          className="w-full bg-gradient-to-r from-purple-600 to-emerald-600 hover:from-purple-700 hover:to-emerald-700 text-white border-0 rounded-lg py-3 font-medium transition-all duration-300 group-hover:scale-105"
+          className="w-full bg-gradient-to-r from-purple-600 to-emerald-600 hover:from-purple-700 hover:to-emerald-700 text-white border-0 rounded-lg py-3 font-medium transition-all duration-300 group-hover:scale-105 mt-auto"
           data-testid={`button-visit-tool-${tool.tool_name.toLowerCase().replace(/\s+/g, '-')}`}
         >
           Visit Tool <ExternalLink className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
