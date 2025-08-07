@@ -19,8 +19,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Business description is required" });
       }
 
+      // Get preferred provider from request (default to auto)
+      const preferredProvider = req.body.preferredProvider || "auto";
+      
       // Get AI recommendations using available providers
-      const { tools, usedProvider } = await aiService.generateRecommendations(userInput);
+      const { tools, usedProvider } = await aiService.generateRecommendations(userInput, preferredProvider);
       
       // Store the recommendation
       const recommendation = await storage.createRecommendation({

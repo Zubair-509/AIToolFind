@@ -413,12 +413,14 @@ export class AIService {
       throw new Error("No AI providers are available. Please configure at least one API key.");
     }
 
-    // Use preferred provider if specified and available
-    let provider = preferredProvider 
-      ? availableProviders.find(p => p.name.toLowerCase().includes(preferredProvider.toLowerCase()))
-      : null;
+    // Use preferred provider if specified and available (skip for 'auto')
+    let provider: AIProvider | null = null;
     
-    // Fallback to first available provider
+    if (preferredProvider && preferredProvider !== "auto") {
+      provider = availableProviders.find(p => p.name.toLowerCase().includes(preferredProvider.toLowerCase()));
+    }
+    
+    // Fallback to first available provider if no preference or preferred not found
     if (!provider) {
       provider = availableProviders[0];
     }

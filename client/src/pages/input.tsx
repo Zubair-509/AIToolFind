@@ -1,23 +1,30 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { insertRecommendationSchema } from "@shared/schema";
-import { Search, Loader2 } from "lucide-react";
+import { Search, Loader2, Cpu, Zap } from "lucide-react";
 import { useLocation } from "wouter";
 import { z } from "zod";
 
 const formSchema = insertRecommendationSchema.extend({
   focusAreas: z.array(z.string()).optional(),
+  preferredProvider: z.string().optional(),
 });
 
 type FormData = z.infer<typeof formSchema>;
+
+interface AIProvider {
+  name: string;
+  available: boolean;
+}
 
 const focusOptions = [
   { id: "marketing", label: "Marketing & Advertising" },
@@ -44,12 +51,23 @@ export default function Input() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [focusAreas, setFocusAreas] = useState<string[]>([]);
+  const [selectedProvider, setSelectedProvider] = useState<string>("auto");
+
+  // Fetch available AI providers
+  const { data: providersData, isLoading: providersLoading } = useQuery({
+    queryKey: ["/api/providers"],
+    queryFn: async () => {
+      const response = await apiRequest("GET", "/api/providers");
+      return response.json() as Promise<{ providers: AIProvider[], count: number }>;
+    },
+  });
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       userInput: "",
       focusAreas: [],
+      preferredProvider: "auto",
     },
   });
 
@@ -57,6 +75,7 @@ export default function Input() {
     mutationFn: async (data: FormData) => {
       const response = await apiRequest("POST", "/api/recommendations", {
         userInput: data.userInput,
+        preferredProvider: selectedProvider,
       });
       return response.json();
     },
@@ -130,6 +149,56 @@ For example: I'm starting a clothing brand and need help with social media marke
                   </FormItem>
                 )}
               />
+              
+              {/* AI Model Selection */}
+              <div className="space-y-4">
+                <FormLabel className="text-lg font-light text-foreground mb-4 block gradient-text flex items-center">
+                  <Cpu className="w-5 h-5 mr-2" />
+                  AI Model Selection
+                </FormLabel>
+                <Select 
+                  value={selectedProvider} 
+                  onValueChange={setSelectedProvider}
+                  disabled={providersLoading}
+                >
+                  <SelectTrigger className="w-full px-6 py-4 border border-border/30 rounded-2xl focus:ring-2 focus:ring-neon-purple/20 focus:border-neon-purple/30 transition-all duration-500 text-lg glass-effect backdrop-blur-sm font-light">
+                    <SelectValue placeholder={
+                      providersLoading 
+                        ? "Loading AI models..." 
+                        : "Select AI Model (Auto-select if none chosen)"
+                    } />
+                  </SelectTrigger>
+                  <SelectContent className="bg-background/95 backdrop-blur-sm border border-border/30">
+                    <SelectItem value="auto" className="text-lg font-light">
+                      <div className="flex items-center">
+                        <Zap className="w-4 h-4 mr-2 text-emerald-400" />
+                        Auto-select Best Available
+                      </div>
+                    </SelectItem>
+                    {providersData?.providers.map((provider) => (
+                      <SelectItem 
+                        key={provider.name} 
+                        value={provider.name.toLowerCase()}
+                        className="text-lg font-light"
+                        disabled={!provider.available}
+                      >
+                        <div className="flex items-center">
+                          <div className={`w-2 h-2 rounded-full mr-3 ${
+                            provider.available ? 'bg-emerald-400' : 'bg-gray-400'
+                          }`}></div>
+                          {provider.name}
+                          {!provider.available && (
+                            <span className="ml-2 text-xs text-gray-500">(API key needed)</span>
+                          )}
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <p className="text-sm text-muted-foreground font-light">
+                  Choose your preferred AI model. Different models may provide varying perspectives and recommendations.
+                </p>
+              </div>
               
               <div className="space-y-6">
                 <FormLabel className="text-xl font-light gradient-text">
