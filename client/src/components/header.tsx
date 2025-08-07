@@ -49,12 +49,14 @@ export function Header() {
             >
               How it Works
             </a>
-            <Button 
-              className="btn-primary"
-              data-testid="button-sign-in"
-            >
-              Sign In
-            </Button>
+            <Link href="/signin">
+              <Button 
+                className="btn-primary"
+                data-testid="button-sign-in"
+              >
+                Sign In
+              </Button>
+            </Link>
           </nav>
           <Button
             variant="ghost"
