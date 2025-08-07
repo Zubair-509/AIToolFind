@@ -225,6 +225,82 @@ Return exactly 9 recommendations in this JSON array format:
   }
 }
 
+// Deepseek Provider (via OpenRouter)
+export class DeepseekProvider implements AIProvider {
+  name = "Deepseek R1";
+  private client: OpenAI; // OpenRouter uses OpenAI-compatible API
+  
+  constructor() {
+    this.client = new OpenAI({ 
+      baseURL: "https://openrouter.ai/api/v1", 
+      apiKey: process.env.OPENROUTER_API_KEY || "" 
+    });
+  }
+
+  isAvailable(): boolean {
+    return !!process.env.OPENROUTER_API_KEY;
+  }
+
+  async generateRecommendations(userInput: string): Promise<AITool[]> {
+    const response = await this.client.chat.completions.create({
+      model: "deepseek/deepseek-r1",
+      messages: [
+        {
+          role: "system",
+          content: this.getSystemPrompt()
+        },
+        {
+          role: "user",
+          content: `Analyze this business need and recommend exactly 9 AI tools and agents (5 free/freemium + 4 paid): ${userInput}`
+        }
+      ],
+    });
+
+    const rawJson = response.choices[0].message.content;
+    if (!rawJson) {
+      throw new Error("Empty response from Deepseek R1");
+    }
+
+    // Extract JSON from response (might be wrapped in markdown or explanation)
+    const jsonMatch = rawJson.match(/\[[\s\S]*?\]/);
+    let jsonString = jsonMatch ? jsonMatch[0] : rawJson;
+    
+    // Try to parse as object first, then extract array
+    try {
+      const parsedData = JSON.parse(jsonString);
+      const tools = parsedData.recommendations || parsedData.tools || parsedData;
+      return recommendationsResponseSchema.parse(tools);
+    } catch (e) {
+      // If direct parsing fails, try to find JSON object
+      const objMatch = rawJson.match(/\{[\s\S]*?\}/);
+      if (objMatch) {
+        const parsedData = JSON.parse(objMatch[0]);
+        const tools = parsedData.recommendations || parsedData.tools || parsedData;
+        return recommendationsResponseSchema.parse(tools);
+      }
+      throw new Error("Could not parse JSON response from Deepseek R1");
+    }
+  }
+
+  private getSystemPrompt(): string {
+    return `You are an AI assistant that recommends AI tools and AI agents to users based on their business needs.
+
+CRITICAL REQUIREMENTS:
+- You MUST return exactly 9 recommendations total in a JSON array
+- First 5 recommendations MUST have pricing "Free" or "Freemium"
+- Last 4 recommendations MUST have pricing "Paid"
+- Include both traditional AI tools AND AI agents (like Replit Agent, Bolt.new, Lovable, v0.dev, Claude, ChatGPT, etc.)
+- All recommendations must be real, trusted, and current as of 2025
+
+Return the response in this JSON format:
+{
+  "recommendations": [
+    {"tool_name": "Tool Name", "purpose": "Description", "pros": ["pro1", "pro2"], "cons": ["con1", "con2"], "pricing": "Free|Freemium|Paid", "why_fit": "explanation"}
+  ]
+}`;
+  }
+}
+
 // xAI Provider
 export class XAIProvider implements AIProvider {
   name = "xAI Grok";
@@ -295,6 +371,7 @@ export class AIService {
     // Initialize all providers
     this.providers = [
       new GeminiProvider(),
+      new DeepseekProvider(),
       new OpenAIProvider(),
       new AnthropicProvider(),
       new XAIProvider()
