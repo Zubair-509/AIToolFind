@@ -1,8 +1,8 @@
-# AI Tools & Agents Finder
+# AI ToolPilot
 
 ## Overview
 
-AI Tools & Agents Finder is a full-stack web application that helps users discover the perfect AI tools and AI agents for their business needs. Users describe their business requirements, and the application provides personalized recommendations for both traditional AI tools and modern AI agents (like Replit Agent, Bolt.new, Lovable, v0.dev, etc.) using Google's Gemini AI. The app features a clean, modern interface built with React and shadcn/ui components, backed by an Express.js server with PostgreSQL database support.
+AI ToolPilot is a full-stack web application that helps users discover the perfect AI tools and AI agents for their business needs. Users describe their business requirements, and the application provides personalized recommendations for both traditional AI tools and modern AI agents (like Replit Agent, Bolt.new, Lovable, v0.dev, etc.) using Google's Gemini AI. The app features a clean, modern interface built with React and shadcn/ui components, backed by an Express.js server with PostgreSQL database support.
 
 ## User Preferences
 
@@ -14,6 +14,7 @@ Preferred communication style: Simple, everyday language.
 - Updated distribution to 5 free/freemium + 4 paid recommendations (9 total)
 - Added retry mechanism to ensure correct number of recommendations
 - Updated UI text throughout app to reflect "AI Tools & Agents" branding
+- Rebranded application name to "AI ToolPilot" as requested by user
 - Enhanced Gemini API prompt to specifically include AI agents alongside traditional tools
 
 ## System Architecture

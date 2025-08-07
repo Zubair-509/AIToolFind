@@ -16,7 +16,7 @@ export function Header() {
               <Brain className="text-white h-8 w-8" />
             </div>
             <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">
-              AI Tools & Agents Finder
+              AI ToolPilot
             </h1>
           </div>
           <nav className="hidden md:flex items-center space-x-8">
