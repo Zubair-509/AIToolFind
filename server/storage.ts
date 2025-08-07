@@ -33,10 +33,9 @@ export class MemStorage implements IStorage {
 
 // Railway provides DATABASE_URL automatically
 const databaseUrl = process.env.DATABASE_URL;
-if (!databaseUrl) {
-  throw new Error('DATABASE_URL environment variable is required for Railway deployment');
+if (databaseUrl) {
+  const sql = neon(databaseUrl);
+  // TODO: Implement PostgreSQL storage when deploying to production
 }
-
-const sql = neon(databaseUrl);
 
 export const storage = new MemStorage();
