@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 interface RecommendationResults {
   id: string;
   tools: AITool[];
+  usedProvider?: string;
 }
 
 export default function Results() {

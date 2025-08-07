@@ -242,12 +242,14 @@ export class DeepseekProvider implements AIProvider {
   }
 
   async generateRecommendations(userInput: string): Promise<AITool[]> {
+    const systemPrompt = this.getSystemPrompt(userInput);
+    
     const response = await this.client.chat.completions.create({
       model: "deepseek/deepseek-r1",
       messages: [
         {
           role: "system",
-          content: this.getSystemPrompt()
+          content: systemPrompt
         },
         {
           role: "user",
@@ -282,22 +284,44 @@ export class DeepseekProvider implements AIProvider {
     }
   }
 
-  private getSystemPrompt(): string {
+  private getSystemPrompt(userInput: string): string {
     return `You are an AI assistant that recommends AI tools and AI agents to users based on their business needs.
 
 CRITICAL REQUIREMENTS:
-- You MUST return exactly 9 recommendations total in a JSON array
+- You MUST return exactly 9 recommendations total
 - First 5 recommendations MUST have pricing "Free" or "Freemium"
 - Last 4 recommendations MUST have pricing "Paid"
 - Include both traditional AI tools AND AI agents (like Replit Agent, Bolt.new, Lovable, v0.dev, Claude, ChatGPT, etc.)
 - All recommendations must be real, trusted, and current as of 2025
 
-Return the response in this JSON format:
-{
-  "recommendations": [
-    {"tool_name": "Tool Name", "purpose": "Description", "pros": ["pro1", "pro2"], "cons": ["con1", "con2"], "pricing": "Free|Freemium|Paid", "why_fit": "explanation"}
-  ]
-}`;
+FOCUS AREAS TO CONSIDER:
+Marketing & Advertising, Graphic Design & UI/UX, Content Creation & Writing, Video & Animation, Data Analytics & Insights, Workflow Automation, Customer Service & Support, Social Media Management, Coding & Development, Productivity & Organization, Finance & Accounting, HR & Recruitment, Sales & CRM, Education & Training, Translation & Localization, Research & Analysis, E-commerce & Retail, Healthcare & Medical
+
+TOOL EXAMPLES BY CATEGORY:
+- Marketing: Copy.ai, Jasper, AdCreative.ai, Canva
+- Design: Figma AI, Midjourney, DALL-E, Adobe Firefly  
+- Content: ChatGPT, Claude, Notion AI, Grammarly
+- Video: Runway ML, Synthesia, Luma AI, Pictory
+- Analytics: Tableau AI, Google Analytics Intelligence
+- Automation: Zapier, Make.com, UiPath
+- Development: GitHub Copilot, Replit Agent, v0.dev, Bolt.new
+- Productivity: Notion AI, Microsoft Copilot, Otter.ai
+- And many more across all categories...
+
+User's business need: ${userInput}
+
+Return exactly 9 recommendations in this JSON format:
+[
+  {"tool_name": "Free Tool/Agent 1", "purpose": "...", "pros": ["..."], "cons": ["..."], "pricing": "Free", "why_fit": "..."},
+  {"tool_name": "Free Tool/Agent 2", "purpose": "...", "pros": ["..."], "cons": ["..."], "pricing": "Freemium", "why_fit": "..."},
+  {"tool_name": "Free Tool/Agent 3", "purpose": "...", "pros": ["..."], "cons": ["..."], "pricing": "Free", "why_fit": "..."},
+  {"tool_name": "Free Tool/Agent 4", "purpose": "...", "pros": ["..."], "cons": ["..."], "pricing": "Freemium", "why_fit": "..."},
+  {"tool_name": "Free Tool/Agent 5", "purpose": "...", "pros": ["..."], "cons": ["..."], "pricing": "Free", "why_fit": "..."},
+  {"tool_name": "Paid Tool/Agent 1", "purpose": "...", "pros": ["..."], "cons": ["..."], "pricing": "Paid", "why_fit": "..."},
+  {"tool_name": "Paid Tool/Agent 2", "purpose": "...", "pros": ["..."], "cons": ["..."], "pricing": "Paid", "why_fit": "..."},
+  {"tool_name": "Paid Tool/Agent 3", "purpose": "...", "pros": ["..."], "cons": ["..."], "pricing": "Paid", "why_fit": "..."},
+  {"tool_name": "Paid Tool/Agent 4", "purpose": "...", "pros": ["..."], "cons": ["..."], "pricing": "Paid", "why_fit": "..."}
+]`;
   }
 }
 
