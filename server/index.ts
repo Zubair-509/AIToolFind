@@ -57,8 +57,8 @@ app.use((req, res, next) => {
   }
 
   // Railway provides PORT environment variable
-  const port = parseInt(process.env.PORT || '5000', 10);
-  const host = process.env.NODE_ENV === 'production' ? '0.0.0.0' : '0.0.0.0';
+  const port = parseInt(process.env.PORT || '3000', 10);
+  const host = '0.0.0.0';
   
   server.listen(port, host, () => {
     log(`🚀 Server running on ${host}:${port} in ${process.env.NODE_ENV || 'development'} mode`);
