@@ -232,7 +232,7 @@ export default function Results() {
 
   if (!results) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'hsl(240, 10%, 3.9%)' }}>
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-16">
             <Sparkles className="h-16 w-16 text-purple-400 mx-auto mb-6" />
@@ -250,7 +250,7 @@ export default function Results() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 relative overflow-hidden">
+    <div className="min-h-screen relative overflow-hidden" style={{ background: 'hsl(240, 10%, 3.9%)' }}>
       {/* Stellar particle background */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Animated floating particles */}
