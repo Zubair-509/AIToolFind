@@ -8,6 +8,9 @@ import { Footer } from "@/components/footer";
 import Home from "@/pages/home";
 import Input from "@/pages/input";
 import Results from "@/pages/results";
+import About from "@/pages/about";
+import Contact from "@/pages/contact";
+import Privacy from "@/pages/privacy";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -16,6 +19,9 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/input" component={Input} />
       <Route path="/results" component={Results} />
+      <Route path="/about" component={About} />
+      <Route path="/contact" component={Contact} />
+      <Route path="/privacy" component={Privacy} />
       <Route component={NotFound} />
     </Switch>
   );

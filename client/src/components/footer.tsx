@@ -62,17 +62,17 @@ export function Footer() {
             <h4 className="font-light text-foreground text-lg mb-6 gradient-text">Company</h4>
             <ul className="space-y-4 text-muted-foreground">
               <li>
-                <a href="#" className="hover:text-foreground transition-all duration-500 font-light hover:drop-shadow-[0_0_8px_hsla(240,100%,70%,0.3)]" data-testid="link-about">
+                <a href="/about" className="hover:text-foreground transition-all duration-500 font-light hover:drop-shadow-[0_0_8px_hsla(240,100%,70%,0.3)]" data-testid="link-about">
                   About
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-foreground transition-all duration-500 font-light hover:drop-shadow-[0_0_8px_hsla(120,100%,50%,0.3)]" data-testid="link-contact">
+                <a href="/contact" className="hover:text-foreground transition-all duration-500 font-light hover:drop-shadow-[0_0_8px_hsla(120,100%,50%,0.3)]" data-testid="link-contact">
                   Contact
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-foreground transition-all duration-500 font-light hover:drop-shadow-[0_0_8px_hsla(60,100%,50%,0.3)]" data-testid="link-privacy">
+                <a href="/privacy" className="hover:text-foreground transition-all duration-500 font-light hover:drop-shadow-[0_0_8px_hsla(60,100%,50%,0.3)]" data-testid="link-privacy">
                   Privacy
                 </a>
               </li>
