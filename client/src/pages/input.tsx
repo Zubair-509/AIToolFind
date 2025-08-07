@@ -20,12 +20,24 @@ const formSchema = insertRecommendationSchema.extend({
 type FormData = z.infer<typeof formSchema>;
 
 const focusOptions = [
-  { id: "marketing", label: "Marketing" },
-  { id: "design", label: "Design" },
-  { id: "content", label: "Content" },
-  { id: "analytics", label: "Analytics" },
-  { id: "automation", label: "Automation" },
-  { id: "video", label: "Video" },
+  { id: "marketing", label: "Marketing & Advertising" },
+  { id: "design", label: "Graphic Design & UI/UX" },
+  { id: "content", label: "Content Creation & Writing" },
+  { id: "video", label: "Video & Animation" },
+  { id: "analytics", label: "Data Analytics & Insights" },
+  { id: "automation", label: "Workflow Automation" },
+  { id: "customer-service", label: "Customer Service & Support" },
+  { id: "social-media", label: "Social Media Management" },
+  { id: "coding", label: "Coding & Development" },
+  { id: "productivity", label: "Productivity & Organization" },
+  { id: "finance", label: "Finance & Accounting" },
+  { id: "hr", label: "HR & Recruitment" },
+  { id: "sales", label: "Sales & CRM" },
+  { id: "education", label: "Education & Training" },
+  { id: "translation", label: "Translation & Localization" },
+  { id: "research", label: "Research & Analysis" },
+  { id: "ecommerce", label: "E-commerce & Retail" },
+  { id: "healthcare", label: "Healthcare & Medical" },
 ];
 
 export default function Input() {
@@ -123,21 +135,21 @@ For example: I'm starting a clothing brand and need help with social media marke
                 <FormLabel className="text-xl font-light gradient-text">
                   Primary Focus Areas (Optional)
                 </FormLabel>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                   {focusOptions.map((option, index) => (
-                    <div key={option.id} className={`flex items-center space-x-4 p-4 rounded-xl border border-border/30 glass-effect hover:border-border/50 transition-all duration-500 scale-in stagger-${index + 1}`}>
+                    <div key={option.id} className={`flex items-center space-x-3 p-3 rounded-xl border border-border/30 glass-effect hover:border-border/50 transition-all duration-500 scale-in`} style={{ animationDelay: `${(index % 6) * 0.1}s` }}>
                       <Checkbox
                         id={option.id}
                         checked={focusAreas.includes(option.id)}
                         onCheckedChange={(checked) => 
                           handleFocusAreaChange(option.id, checked as boolean)
                         }
-                        className="rounded border border-border data-[state=checked]:border-neon-purple data-[state=checked]:bg-neon-purple/20 h-5 w-5"
+                        className="rounded border border-border data-[state=checked]:border-neon-purple data-[state=checked]:bg-neon-purple/20 h-4 w-4"
                         data-testid={`checkbox-${option.id}`}
                       />
                       <label 
                         htmlFor={option.id} 
-                        className="text-lg text-foreground cursor-pointer font-light flex-1"
+                        className="text-sm text-foreground cursor-pointer font-light flex-1"
                       >
                         {option.label}
                       </label>
