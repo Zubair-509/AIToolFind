@@ -54,7 +54,7 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="section-padding">
+      <section id="features" className="section-padding">
         <div className="container">
           <div className="text-center mb-20">
             <div className="slide-in-left">
@@ -104,7 +104,7 @@ export default function Home() {
       </section>
 
       {/* Process Section */}
-      <section className="section-padding bg-gradient-to-b from-transparent to-muted/20">
+      <section id="how-it-works" className="section-padding bg-gradient-to-b from-transparent to-muted/20">
         <div className="container">
           <div className="text-center mb-20">
             <div className="fade-in">

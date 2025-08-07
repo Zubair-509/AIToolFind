@@ -26,12 +26,28 @@ export function Footer() {
             <h4 className="font-light text-foreground text-lg mb-6 gradient-text">Product</h4>
             <ul className="space-y-4 text-muted-foreground">
               <li>
-                <a href="#" className="hover:text-foreground transition-all duration-500 font-light hover:drop-shadow-[0_0_8px_hsla(280,100%,70%,0.3)]" data-testid="link-features-footer">
+                <a 
+                  href="#features" 
+                  className="hover:text-foreground transition-all duration-500 font-light hover:drop-shadow-[0_0_8px_hsla(280,100%,70%,0.3)] cursor-pointer" 
+                  data-testid="link-features-footer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
                   Features
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-foreground transition-all duration-500 font-light hover:drop-shadow-[0_0_8px_hsla(180,100%,50%,0.3)]" data-testid="link-how-it-works-footer">
+                <a 
+                  href="#how-it-works" 
+                  className="hover:text-foreground transition-all duration-500 font-light hover:drop-shadow-[0_0_8px_hsla(180,100%,50%,0.3)] cursor-pointer" 
+                  data-testid="link-how-it-works-footer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
                   How it Works
                 </a>
               </li>
