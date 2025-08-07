@@ -392,13 +392,13 @@ export class AIService {
   private providers: AIProvider[] = [];
   
   constructor() {
-    // Initialize all providers
+    // Initialize all providers - put most reliable ones first
     this.providers = [
       new GeminiProvider(),
-      new DeepseekProvider(),
       new OpenAIProvider(),
       new AnthropicProvider(),
-      new XAIProvider()
+      new XAIProvider(),
+      new DeepseekProvider() // Move Deepseek to end since it has credit issues
     ];
   }
 
@@ -460,14 +460,17 @@ export class AIService {
         lastError = error as Error;
         console.error(`${provider.name} AI Error (attempt ${attempt}/${maxRetries}):`, error);
         
-        if (attempt === maxRetries) {
+        // For credit/billing errors (402), immediately try next provider instead of retrying
+        const isCreditsError = (error as any)?.status === 402 || (error as any)?.code === 402;
+        
+        if (attempt === maxRetries || isCreditsError) {
           // Try next available provider if current one fails
           const currentIndex = availableProviders.indexOf(provider);
           if (currentIndex < availableProviders.length - 1) {
             provider = availableProviders[currentIndex + 1];
-            console.log(`${availableProviders[currentIndex].name} failed. Switching to ${provider.name} AI as fallback`);
+            console.log(`${availableProviders[currentIndex].name} failed${isCreditsError ? ' (insufficient credits)' : ''}. Switching to ${provider.name} AI as fallback`);
             attempt = 0; // Reset attempts for new provider
-            maxRetries = 2; // Reduce retries for fallback providers
+            maxRetries = isCreditsError ? 1 : 2; // Don't retry credit errors, just switch
           }
         }
       }
