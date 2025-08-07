@@ -23,6 +23,9 @@ Preferred communication style: Simple, everyday language.
 - Redesigned results page with modern dark theme, smooth animations, and glass morphism effects
 - Improved mobile and desktop responsiveness with optimized card layouts
 - Enhanced tool cards with gradient borders, hover animations, and better visual hierarchy
+- Added multi-provider AI support with OpenAI, Anthropic, xAI, and Gemini APIs
+- Enhanced PDF export with smart content fitting and page management
+- Added provider fallback system for reliable AI recommendations
 
 ## System Architecture
 

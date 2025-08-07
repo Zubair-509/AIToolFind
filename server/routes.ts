@@ -1,11 +1,15 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { getAIRecommendations } from "./services/gemini";
+import { AIService } from "./services/ai-providers";
 import { insertRecommendationSchema } from "@shared/schema";
 import { z } from "zod";
+import { nanoid } from "nanoid";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Initialize AI service
+  const aiService = new AIService();
+  
   // Get AI tool recommendations
   app.post("/api/recommendations", async (req, res) => {
     try {
@@ -15,8 +19,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Business description is required" });
       }
 
-      // Get AI recommendations using Gemini
-      const tools = await getAIRecommendations(userInput);
+      // Get AI recommendations using available providers
+      const { tools, usedProvider } = await aiService.generateRecommendations(userInput);
       
       // Store the recommendation
       const recommendation = await storage.createRecommendation({
@@ -27,12 +31,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({
         id: recommendation.id,
         tools: recommendation.tools,
+        usedProvider,
       });
     } catch (error) {
       console.error("Error getting recommendations:", error);
       res.status(500).json({ 
         message: "Failed to get AI recommendations. Please try again." 
       });
+    }
+  });
+  
+  // Get available AI providers
+  app.get("/api/providers", async (req, res) => {
+    try {
+      const availableProviders = aiService.getAvailableProviders();
+      res.json({ 
+        providers: availableProviders.map(p => ({ name: p.name, available: p.isAvailable() })),
+        count: availableProviders.length
+      });
+    } catch (error) {
+      console.error("Error getting providers:", error);
+      res.status(500).json({ error: "Failed to get providers" });
     }
   });
 
