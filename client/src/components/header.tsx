@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Brain, Menu } from "lucide-react";
+import { Link } from "wouter";
 
 export function Header() {
 
@@ -8,7 +9,7 @@ export function Header() {
       {/* Floating orbs for decoration */}
       <div className="floating-orb w-4 h-4 gradient-bg top-4 left-[10%] opacity-40"></div>
       <div className="floating-orb w-3 h-3 gradient-bg top-6 right-[15%] opacity-30"></div>
-      
+
       <div className="container">
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center gap-4 fade-in">
@@ -20,15 +21,15 @@ export function Header() {
             </h1>
           </div>
           <nav className="hidden md:flex items-center space-x-8 fade-in stagger-2">
-            <a 
-              href="/" 
+            <a
+              href="/"
               className="text-muted-foreground hover:text-foreground transition-all duration-500 font-light text-lg hover:drop-shadow-[0_0_12px_hsla(120,100%,50%,0.3)]"
               data-testid="link-home"
             >
               Home
             </a>
-            <a 
-              href="#features" 
+            <a
+              href="#features"
               className="text-muted-foreground hover:text-foreground transition-all duration-500 font-light text-lg hover:drop-shadow-[0_0_12px_hsla(280,100%,70%,0.3)] cursor-pointer"
               data-testid="link-features"
               onClick={(e) => {
@@ -38,8 +39,8 @@ export function Header() {
             >
               Features
             </a>
-            <a 
-              href="#how-it-works" 
+            <a
+              href="#how-it-works"
               className="text-muted-foreground hover:text-foreground transition-all duration-500 font-light text-lg hover:drop-shadow-[0_0_12px_hsla(180,100%,50%,0.3)] cursor-pointer"
               data-testid="link-how-it-works"
               onClick={(e) => {
@@ -50,7 +51,7 @@ export function Header() {
               How it Works
             </a>
             <Link href="/signin">
-              <Button 
+              <Button
                 className="btn-primary"
                 data-testid="button-sign-in"
               >
