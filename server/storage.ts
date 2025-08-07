@@ -1,6 +1,5 @@
 import { type Recommendation, type InsertRecommendation, type AITool } from "@shared/schema";
 import { randomUUID } from "crypto";
-import { neon } from '@neondatabase/serverless';
 
 export interface IStorage {
   getRecommendation(id: string): Promise<Recommendation | undefined>;
@@ -29,13 +28,6 @@ export class MemStorage implements IStorage {
     this.recommendations.set(id, recommendation);
     return recommendation;
   }
-}
-
-// Railway provides DATABASE_URL automatically
-const databaseUrl = process.env.DATABASE_URL;
-if (databaseUrl) {
-  const sql = neon(databaseUrl);
-  // TODO: Implement PostgreSQL storage when deploying to production
 }
 
 export const storage = new MemStorage();

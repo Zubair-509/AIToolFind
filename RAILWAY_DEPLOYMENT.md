@@ -8,7 +8,6 @@
 ## Environment Variables
 Set these environment variables in Railway dashboard:
 
-- `DATABASE_URL`: Your PostgreSQL connection string
 - `NODE_ENV`: `production`
 - `SESSION_SECRET`: A secure random string
 
@@ -23,11 +22,7 @@ Set these environment variables in Railway dashboard:
    - Build command: `npm run build`
    - Start command: `npm start`
 
-3. **Database Setup**:
-   - Add PostgreSQL service in Railway
-   - Copy the `DATABASE_URL` to your environment variables
-
-4. **Deploy**:
+3. **Deploy**:
    - Railway will automatically deploy on each push to main branch
    - Your app will be available at the provided Railway URL
 
@@ -43,4 +38,4 @@ npm start
 ## Troubleshooting
 - Ensure all environment variables are set
 - Check build logs in Railway dashboard
-- Verify DATABASE_URL is accessible from Railway
+- Verify all required dependencies are installed
