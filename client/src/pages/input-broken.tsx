@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
@@ -13,6 +13,12 @@ import { insertRecommendationSchema } from "@shared/schema";
 import { Search, Loader2, Cpu, Zap } from "lucide-react";
 import { useLocation } from "wouter";
 import { z } from "zod";
+// Temporarily removing animations to isolate runtime error
+// import { AnimatedSection } from "@/components/animations/AnimatedSection";
+// import { AnimatedButton } from "@/components/animations/AnimatedButton";
+// import { AnimatedCard } from "@/components/animations/AnimatedCard";
+// import { FullScreenLoader } from "@/components/animations/LoadingSpinner";
+// import { AnimatePresence } from "framer-motion";
 
 const formSchema = insertRecommendationSchema.extend({
   focusAreas: z.array(z.string()).optional(),
@@ -53,6 +59,17 @@ export default function Input() {
   const [focusAreas, setFocusAreas] = useState<string[]>([]);
   const [selectedProvider, setSelectedProvider] = useState<string>("auto");
 
+  // AI providers data - will be populated when new API setup is complete
+  const providersData = {
+    providers: [
+      { name: "Ready for New Setup", available: false }
+    ],
+    count: 0
+  };
+  const providersLoading = false;
+
+
+
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -71,6 +88,7 @@ export default function Input() {
       return response.json();
     },
     onSuccess: (data) => {
+      // Store results in sessionStorage to pass to results page
       sessionStorage.setItem("recommendationResults", JSON.stringify(data));
       setLocation("/results");
     },
@@ -112,7 +130,7 @@ export default function Input() {
             <p className="text-large">
               Tell us about your business, goals, or the specific tasks you need help with
             </p>
-          </div>
+          </AnimatedSection>
           
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -120,7 +138,7 @@ export default function Input() {
                 control={form.control}
                 name="userInput"
                 render={({ field }) => (
-                  <div>
+                  <AnimatedSection delay={0.2}>
                     <FormItem>
                     <FormLabel className="text-lg font-light text-foreground mb-4 block gradient-text">
                       Business Description
@@ -138,12 +156,12 @@ For example: I'm starting a clothing brand and need help with social media marke
                     </FormControl>
                     <FormMessage />
                     </FormItem>
-                  </div>
+                  </AnimatedSection>
                 )}
               />
               
-              {/* AI Model Selection */}
-              <div className="space-y-4">
+              {/* AI Model Selection - Redesigned with original styling */}
+              <AnimatedSection delay={0.4} className="space-y-4">
                 <FormLabel className="text-lg font-light text-foreground mb-4 block gradient-text flex items-center">
                   <Cpu className="w-5 h-5 mr-2" />
                   AI Model Selection
@@ -151,6 +169,7 @@ For example: I'm starting a clothing brand and need help with social media marke
                 <Select 
                   value={selectedProvider} 
                   onValueChange={setSelectedProvider}
+                  disabled={false}
                 >
                   <SelectTrigger className="w-full px-6 py-4 border border-border/30 rounded-2xl focus:ring-2 focus:ring-neon-purple/20 focus:border-neon-purple/30 transition-all duration-500 text-lg glass-effect backdrop-blur-sm font-light">
                     <SelectValue placeholder="Select AI Model (Auto-select if none chosen)" />
@@ -178,16 +197,17 @@ For example: I'm starting a clothing brand and need help with social media marke
                 <p className="text-sm text-muted-foreground font-light">
                   Choose your preferred AI model. Different models may provide varying perspectives and recommendations.
                 </p>
-              </div>
+              </AnimatedSection>
               
-              <div className="space-y-6">
+              <AnimatedSection delay={0.6} className="space-y-6">
                 <FormLabel className="text-xl font-light gradient-text">
                   Primary Focus Areas (Optional)
                 </FormLabel>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {focusOptions.map((option) => (
-                    <div 
+                  {focusOptions.map((option, index) => (
+                    <AnimatedSection 
                       key={option.id} 
+                      delay={0.8 + (index * 0.05)}
                       className="flex items-center space-x-3 p-3 rounded-xl border border-border/30 glass-effect hover:border-border/50 transition-all duration-500"
                     >
                       <Checkbox
@@ -205,13 +225,13 @@ For example: I'm starting a clothing brand and need help with social media marke
                       >
                         {option.label}
                       </label>
-                    </div>
+                    </AnimatedSection>
                   ))}
                 </div>
-              </div>
+              </AnimatedSection>
 
-              <div>
-                <Button
+              <AnimatedSection delay={1.2}>
+                <AnimatedButton
                 type="submit"
                 disabled={getRecommendationsMutation.isPending}
                 className="w-full btn-primary py-6 text-xl font-light disabled:opacity-50 disabled:cursor-not-allowed"
@@ -228,12 +248,16 @@ For example: I'm starting a clothing brand and need help with social media marke
                     <Search className="ml-3 h-6 w-6 relative z-10" />
                   </>
                 )}
-                </Button>
-              </div>
+                </AnimatedButton>
+              </AnimatedSection>
             </form>
           </Form>
-        </div>
+        </AnimatedCard>
       </div>
+      
+      <AnimatePresence>
+        {getRecommendationsMutation.isPending && <FullScreenLoader />}
+      </AnimatePresence>
     </section>
   );
 }
