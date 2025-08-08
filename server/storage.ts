@@ -7,8 +7,8 @@ import { eq } from "drizzle-orm";
 
 export interface IStorage {
   getRecommendation(id: string): Promise<Recommendation | undefined>;
-  createRecommendation(recommendation: InsertRecommendation & { tools: AITool[]; userId?: string }): Promise<Recommendation>;
-  getUserRecommendations(userId: string): Promise<Recommendation[]>;
+  createRecommendation(recommendation: InsertRecommendation & { tools: AITool[] }): Promise<Recommendation>;
+  getAllRecommendations(): Promise<Recommendation[]>;
 }
 
 // Supabase/Neon Database Storage
@@ -39,7 +39,7 @@ export class DatabaseStorage implements IStorage {
     }
   }
 
-  async createRecommendation(insertRecommendation: InsertRecommendation & { tools: AITool[]; userId?: string }): Promise<Recommendation> {
+  async createRecommendation(insertRecommendation: InsertRecommendation & { tools: AITool[] }): Promise<Recommendation> {
     const id = randomUUID();
     const recommendation: Recommendation = {
       id,
@@ -53,8 +53,6 @@ export class DatabaseStorage implements IStorage {
         id,
         userInput: insertRecommendation.userInput,
         tools: insertRecommendation.tools as any,
-        // Add user_id if provided (for authenticated users)
-        ...(insertRecommendation.userId && { user_id: insertRecommendation.userId }),
       });
       
       return recommendation;
@@ -64,17 +62,16 @@ export class DatabaseStorage implements IStorage {
     }
   }
 
-  async getUserRecommendations(userId: string): Promise<Recommendation[]> {
+  async getAllRecommendations(): Promise<Recommendation[]> {
     try {
       const result = await this.db
         .select()
         .from(recommendations)
-        .where(eq(recommendations.user_id, userId))
         .orderBy(recommendations.createdAt);
       
       return result;
     } catch (error) {
-      console.error('Error fetching user recommendations:', error);
+      console.error('Error fetching recommendations:', error);
       return [];
     }
   }
@@ -90,7 +87,7 @@ export class MemStorage implements IStorage {
     return this.recommendations.get(id);
   }
 
-  async createRecommendation(insertRecommendation: InsertRecommendation & { tools: AITool[]; userId?: string }): Promise<Recommendation> {
+  async createRecommendation(insertRecommendation: InsertRecommendation & { tools: AITool[] }): Promise<Recommendation> {
     const id = randomUUID();
     const recommendation: Recommendation = {
       id,
@@ -102,9 +99,7 @@ export class MemStorage implements IStorage {
     return recommendation;
   }
 
-  async getUserRecommendations(userId: string): Promise<Recommendation[]> {
-    // For memory storage, we can't filter by user ID effectively
-    // This is just a placeholder implementation
+  async getAllRecommendations(): Promise<Recommendation[]> {
     return Array.from(this.recommendations.values());
   }
 }

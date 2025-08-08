@@ -7,27 +7,7 @@ import { z } from "zod";
 import { nanoid } from "nanoid";
 import { GeminiProvider } from "./services/ai-providers";
 
-// Middleware to extract user ID from Supabase JWT (optional)
-const extractUserId = (req: any) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return null;
-  }
 
-  try {
-    const token = authHeader.substring(7);
-    // For now, we'll extract the user ID from the token payload without verification
-    // In production, you should verify the JWT with Supabase's public key
-    const payload = token.split('.')[1];
-    if (!payload) return null;
-    
-    const decoded = JSON.parse(Buffer.from(payload, 'base64').toString());
-    return decoded?.sub || null;
-  } catch (error) {
-    console.error('Error extracting user ID from token:', error);
-    return null;
-  }
-};
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Initialize AI service
@@ -45,9 +25,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Get preferred provider from request (default to auto)
       const preferredProvider = req.body.preferredProvider || "auto";
 
-      // Extract user ID if authenticated
-      const userId = extractUserId(req);
-
       // Get AI recommendations using available providers
       const { tools, usedProvider } = await aiService.generateRecommendations(userInput, preferredProvider);
 
@@ -55,7 +32,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const recommendation = await storage.createRecommendation({
         userInput,
         tools,
-        userId,
       });
 
       res.json({
@@ -88,21 +64,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get user's recommendations (authenticated route)
-  app.get("/api/recommendations/user/:userId", async (req, res) => {
+  // Get all recommendations
+  app.get("/api/recommendations", async (req, res) => {
     try {
-      const { userId } = req.params;
-      
-      // In production, verify that the requesting user matches the userId
-      const requestingUserId = extractUserId(req);
-      if (!requestingUserId || requestingUserId !== userId) {
-        return res.status(403).json({ message: "Unauthorized" });
-      }
-
-      const recommendations = await storage.getUserRecommendations(userId);
+      const recommendations = await storage.getAllRecommendations();
       res.json(recommendations);
     } catch (error) {
-      console.error("Error fetching user recommendations:", error);
+      console.error("Error fetching recommendations:", error);
       res.status(500).json({ message: "Failed to fetch recommendations" });
     }
   });

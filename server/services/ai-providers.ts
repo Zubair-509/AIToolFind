@@ -233,7 +233,7 @@ export class DeepseekProvider implements AIProvider {
   constructor() {
     this.client = new OpenAI({ 
       baseURL: "https://openrouter.ai/api/v1", 
-      apiKey: "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" 
+      apiKey: process.env.OPENROUTER_API_KEY || "" 
     });
   }
 

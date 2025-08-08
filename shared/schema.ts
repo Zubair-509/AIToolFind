@@ -5,19 +5,9 @@ import { z } from "zod";
 
 export const recommendations = pgTable("recommendations", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  user_id: varchar("user_id"), // References auth.users(id) in Supabase
   userInput: text("user_input").notNull(),
   tools: jsonb("tools").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
-});
-
-export const profiles = pgTable("profiles", {
-  id: varchar("id").primaryKey(), // References auth.users(id) in Supabase
-  email: text("email").unique().notNull(),
-  full_name: text("full_name"),
-  avatar_url: text("avatar_url"),
-  created_at: timestamp("created_at").defaultNow(),
-  updated_at: timestamp("updated_at").defaultNow(),
 });
 export const insertRecommendationSchema = createInsertSchema(recommendations).pick({
   userInput: true,

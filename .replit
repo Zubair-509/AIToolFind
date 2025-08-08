@@ -7,7 +7,8 @@ channel = "stable-25_05"
 
 [deployment]
 deploymentTarget = "autoscale"
-run = ["sh", "-c", "npm run dev"]
+run = ["npm", "run", "start"]
+build = ["npm", "run", "build"]
 
 [[ports]]
 localPort = 5000
@@ -47,4 +48,4 @@ task = "shell.exec"
 args = "npm run dev"
 
 [agent]
-integrations = ["javascript_gemini==1.0.0", "javascript_anthropic==1.0.0", "perplexity_v0==1.0.0", "javascript_xai==1.0.0", "javascript_openai==1.0.0"]
+integrations = ["javascript_xai==1.0.0", "javascript_openai==1.0.0", "perplexity_v0==1.0.0", "javascript_database==1.0.0", "javascript_anthropic==1.0.0", "javascript_gemini==1.0.0"]
