@@ -79,7 +79,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/providers", async (req, res) => {
     try {
       const allProviders = [
-        { name: "Gemini", available: !!process.env.GEMINI_API_KEY },
+        { name: "Gemini", available: !!(process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY) },
         { name: "Deepseek R1", available: !!process.env.OPENROUTER_API_KEY },
         { name: "OpenAI", available: !!process.env.OPENAI_API_KEY },
         { name: "Anthropic", available: !!process.env.ANTHROPIC_API_KEY },
