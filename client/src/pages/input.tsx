@@ -59,21 +59,15 @@ export default function Input() {
   const [selectedProvider, setSelectedProvider] = useState<string>("auto");
 
   // AI providers data - will be populated when new API setup is complete
-  const [providersData, setProvidersData] = useState<{ providers: AIProvider[], count: number }>({
+  const providersData = {
     providers: [
       { name: "Ready for New Setup", available: false }
     ],
     count: 0
-  });
-  const [providersLoading, setProvidersLoading] = useState(false);
-
-  // Function to update providers when new APIs are configured
-  const updateProviders = (newProviders: AIProvider[]) => {
-    setProvidersData({
-      providers: newProviders,
-      count: newProviders.filter(p => p.available).length
-    });
   };
+  const providersLoading = false;
+
+
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -177,11 +171,7 @@ For example: I'm starting a clothing brand and need help with social media marke
                   disabled={providersLoading}
                 >
                   <SelectTrigger className="w-full px-6 py-4 border border-border/30 rounded-2xl focus:ring-2 focus:ring-neon-purple/20 focus:border-neon-purple/30 transition-all duration-500 text-lg glass-effect backdrop-blur-sm font-light">
-                    <SelectValue placeholder={
-                      providersLoading 
-                        ? "Loading AI models..." 
-                        : "Select AI Model (Auto-select if none chosen)"
-                    } />
+                    <SelectValue placeholder="Select AI Model (Auto-select if none chosen)" />
                   </SelectTrigger>
                   <SelectContent className="bg-background/95 backdrop-blur-sm border border-border/30">
                     <SelectItem value="auto" className="text-lg font-light">
@@ -190,24 +180,17 @@ For example: I'm starting a clothing brand and need help with social media marke
                         Auto-select Best Available
                       </div>
                     </SelectItem>
-                    {providersData.providers.map((provider) => (
-                      <SelectItem 
-                        key={provider.name} 
-                        value={provider.name.toLowerCase().replace(/\s+/g, '-')}
-                        className="text-lg font-light"
-                        disabled={!provider.available}
-                      >
-                        <div className="flex items-center">
-                          <div className={`w-2 h-2 rounded-full mr-3 ${
-                            provider.available ? 'bg-emerald-400' : 'bg-gray-400'
-                          }`}></div>
-                          {provider.name}
-                          {!provider.available && (
-                            <span className="ml-2 text-xs text-gray-500">(API key needed)</span>
-                          )}
-                        </div>
-                      </SelectItem>
-                    ))}
+                    <SelectItem 
+                      value="ready-for-setup" 
+                      className="text-lg font-light"
+                      disabled={true}
+                    >
+                      <div className="flex items-center">
+                        <div className="w-2 h-2 rounded-full mr-3 bg-gray-400"></div>
+                        Ready for New Setup
+                        <span className="ml-2 text-xs text-gray-500">(API key needed)</span>
+                      </div>
+                    </SelectItem>
                   </SelectContent>
                 </Select>
                 <p className="text-sm text-muted-foreground font-light">
