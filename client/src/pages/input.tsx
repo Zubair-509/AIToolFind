@@ -58,14 +58,22 @@ export default function Input() {
   const [focusAreas, setFocusAreas] = useState<string[]>([]);
   const [selectedProvider, setSelectedProvider] = useState<string>("auto");
 
-  // Fetch available AI providers
-  const { data: providersData, isLoading: providersLoading } = useQuery({
-    queryKey: ["/api/providers"],
-    queryFn: async () => {
-      const response = await apiRequest("GET", "/api/providers");
-      return response.json() as Promise<{ providers: AIProvider[], count: number }>;
-    },
+  // AI providers data - will be populated when new API setup is complete
+  const [providersData, setProvidersData] = useState<{ providers: AIProvider[], count: number }>({
+    providers: [
+      { name: "Ready for New Setup", available: false }
+    ],
+    count: 0
   });
+  const [providersLoading, setProvidersLoading] = useState(false);
+
+  // Function to update providers when new APIs are configured
+  const updateProviders = (newProviders: AIProvider[]) => {
+    setProvidersData({
+      providers: newProviders,
+      count: newProviders.filter(p => p.available).length
+    });
+  };
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -78,20 +86,9 @@ export default function Input() {
 
   const getRecommendationsMutation = useMutation({
     mutationFn: async (data: FormData) => {
-      // Transform provider value back to original name for API
-      let providerForApi = selectedProvider;
-      if (selectedProvider !== "auto" && providersData?.providers) {
-        const provider = providersData.providers.find(p => 
-          p.name.toLowerCase().replace(/\s+/g, '-') === selectedProvider
-        );
-        if (provider) {
-          providerForApi = provider.name;
-        }
-      }
-      
       const response = await apiRequest("POST", "/api/recommendations", {
         userInput: data.userInput,
-        preferredProvider: providerForApi,
+        preferredProvider: selectedProvider,
       });
       return response.json();
     },
@@ -168,7 +165,7 @@ For example: I'm starting a clothing brand and need help with social media marke
                 )}
               />
               
-              {/* AI Model Selection */}
+              {/* AI Model Selection - Recreated with same design */}
               <AnimatedSection delay={0.4} className="space-y-4">
                 <FormLabel className="text-lg font-light text-foreground mb-4 block gradient-text flex items-center">
                   <Cpu className="w-5 h-5 mr-2" />
@@ -193,7 +190,7 @@ For example: I'm starting a clothing brand and need help with social media marke
                         Auto-select Best Available
                       </div>
                     </SelectItem>
-                    {providersData?.providers.map((provider) => (
+                    {providersData.providers.map((provider) => (
                       <SelectItem 
                         key={provider.name} 
                         value={provider.name.toLowerCase().replace(/\s+/g, '-')}
