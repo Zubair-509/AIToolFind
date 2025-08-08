@@ -1,4 +1,3 @@
 
-// Database removed - no longer using Neon Database
+// Database connections removed - using in-memory storage only
 export const db = null;
-export const pool = null;
