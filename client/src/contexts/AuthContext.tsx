@@ -57,6 +57,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signUp = async (email: string, password: string, fullName?: string) => {
     try {
       setLoading(true);
+      
+      // Check if Supabase is properly configured
+      if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_ANON_KEY) {
+        const configError = {
+          message: "Authentication is not configured. Please set up your Supabase environment variables."
+        } as AuthError;
+        
+        toast({
+          variant: "destructive",
+          title: "Configuration Error",
+          description: "Authentication service is not configured. Please contact support.",
+        });
+        
+        return { error: configError };
+      }
+
       const { error } = await supabase.auth.signUp({
         email,
         password,
@@ -97,6 +113,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signIn = async (email: string, password: string) => {
     try {
       setLoading(true);
+      
+      // Check if Supabase is properly configured
+      if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_ANON_KEY) {
+        const configError = {
+          message: "Authentication is not configured. Please set up your Supabase environment variables."
+        } as AuthError;
+        
+        toast({
+          variant: "destructive",
+          title: "Configuration Error",
+          description: "Authentication service is not configured. Please contact support.",
+        });
+        
+        return { error: configError };
+      }
+
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
