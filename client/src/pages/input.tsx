@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+// Removed Select components to prevent runtime errors
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { insertRecommendationSchema } from "@shared/schema";
-import { Search, Loader2, Cpu, Zap } from "lucide-react";
+import { Search, Loader2, Cpu } from "lucide-react";
 import { useLocation } from "wouter";
 import { z } from "zod";
 import { AnimatedSection } from "@/components/animations/AnimatedSection";
@@ -159,44 +159,28 @@ For example: I'm starting a clothing brand and need help with social media marke
                 )}
               />
               
-              {/* AI Model Selection - Recreated with same design */}
-              <AnimatedSection delay={0.4} className="space-y-4">
-                <FormLabel className="text-lg font-light text-foreground mb-4 block gradient-text flex items-center">
+              {/* AI Model Selection - Simplified to prevent errors */}
+              <div className="space-y-4">
+                <label className="text-lg font-light text-foreground mb-4 block gradient-text flex items-center">
                   <Cpu className="w-5 h-5 mr-2" />
                   AI Model Selection
-                </FormLabel>
-                <Select 
-                  value={selectedProvider} 
-                  onValueChange={setSelectedProvider}
-                  disabled={providersLoading}
-                >
-                  <SelectTrigger className="w-full px-6 py-4 border border-border/30 rounded-2xl focus:ring-2 focus:ring-neon-purple/20 focus:border-neon-purple/30 transition-all duration-500 text-lg glass-effect backdrop-blur-sm font-light">
-                    <SelectValue placeholder="Select AI Model (Auto-select if none chosen)" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-background/95 backdrop-blur-sm border border-border/30">
-                    <SelectItem value="auto" className="text-lg font-light">
-                      <div className="flex items-center">
-                        <Zap className="w-4 h-4 mr-2 text-emerald-400" />
-                        Auto-select Best Available
-                      </div>
-                    </SelectItem>
-                    <SelectItem 
-                      value="ready-for-setup" 
-                      className="text-lg font-light"
-                      disabled={true}
-                    >
-                      <div className="flex items-center">
-                        <div className="w-2 h-2 rounded-full mr-3 bg-gray-400"></div>
-                        Ready for New Setup
-                        <span className="ml-2 text-xs text-gray-500">(API key needed)</span>
-                      </div>
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
+                </label>
+                <div className="w-full">
+                  <select 
+                    value={selectedProvider} 
+                    onChange={(e) => setSelectedProvider(e.target.value)}
+                    className="w-full px-6 py-4 border border-border/30 rounded-2xl focus:ring-2 focus:ring-neon-purple/20 focus:border-neon-purple/30 transition-all duration-500 text-lg glass-effect backdrop-blur-sm font-light bg-background"
+                  >
+                    <option value="auto">🚀 Auto-select Best Available</option>
+                    <option value="ready-for-setup" disabled>
+                      ⚙️ Ready for New Setup (API key needed)
+                    </option>
+                  </select>
+                </div>
                 <p className="text-sm text-muted-foreground font-light">
                   Choose your preferred AI model. Different models may provide varying perspectives and recommendations.
                 </p>
-              </AnimatedSection>
+              </div>
               
               <AnimatedSection delay={0.6} className="space-y-6">
                 <FormLabel className="text-xl font-light gradient-text">
