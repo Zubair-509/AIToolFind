@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { Link } from "wouter";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -8,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Eye, EyeOff, LogIn, ArrowLeft } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const signInSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -17,8 +19,9 @@ const signInSchema = z.object({
 type SignInForm = z.infer<typeof signInSchema>;
 
 export default function SignIn() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const { signIn, loading } = useAuth();
+  const [, setLocation] = useLocation();
 
   const form = useForm<SignInForm>({
     resolver: zodResolver(signInSchema),
@@ -29,16 +32,10 @@ export default function SignIn() {
   });
 
   const onSubmit = async (data: SignInForm) => {
-    setIsSubmitting(true);
-    try {
-      // TODO: Implement sign in logic
-      console.log("Sign in data:", data);
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-    } catch (error) {
-      console.error("Sign in error:", error);
-    } finally {
-      setIsSubmitting(false);
+    const { error } = await signIn(data.email, data.password);
+    
+    if (!error) {
+      setLocation('/');
     }
   };
 
@@ -141,11 +138,11 @@ export default function SignIn() {
 
                   <Button
                     type="submit"
-                    disabled={isSubmitting}
+                    disabled={loading}
                     className="btn-primary w-full scale-in stagger-4"
                     data-testid="button-sign-in"
                   >
-                    {isSubmitting ? (
+                    {loading ? (
                       <>
                         <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
                         <span className="relative z-10">Signing In...</span>
@@ -166,6 +163,13 @@ export default function SignIn() {
                   <Link href="/signup">
                     <Button variant="link" className="text-neon-purple hover:text-neon-purple/80 p-0">
                       Sign up
+                    </Button>
+                  </Link>
+                </p>
+                <p className="text-muted-foreground mt-2">
+                  <Link href="/forgot-password">
+                    <Button variant="link" className="text-neon-purple hover:text-neon-purple/80 p-0">
+                      Forgot your password?
                     </Button>
                   </Link>
                 </p>
