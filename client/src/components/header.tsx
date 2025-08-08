@@ -2,6 +2,9 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Brain, Menu } from "lucide-react";
 import { Link } from "wouter";
+import { AnimatedSection } from "@/components/animations/AnimatedSection";
+import { AnimatedButton } from "@/components/animations/AnimatedButton";
+import { FloatingElement } from "@/components/animations/FloatingElement";
 
 export function Header() {
 
@@ -13,15 +16,18 @@ export function Header() {
 
       <div className="container">
         <div className="flex justify-between items-center h-20">
-          <div className="flex items-center gap-4 fade-in">
-            <div className="gradient-bg p-3 rounded-2xl neon-glow">
-              <Brain className="text-white h-8 w-8" />
-            </div>
+          <AnimatedSection direction="left" className="flex items-center gap-4">
+            <FloatingElement duration={4} amplitude={3}>
+              <div className="gradient-bg p-3 rounded-2xl neon-glow">
+                <Brain className="text-white h-8 w-8" />
+              </div>
+            </FloatingElement>
             <h1 className="text-2xl font-light accent-gradient">
               AI ToolPilot
             </h1>
-          </div>
-          <nav className="hidden md:flex items-center space-x-8 fade-in stagger-2">
+          </AnimatedSection>
+          <AnimatedSection direction="right" delay={0.2}>
+            <nav className="hidden md:flex items-center space-x-8">
             <a
               href="/"
               className="text-muted-foreground hover:text-foreground transition-all duration-500 font-light text-lg hover:drop-shadow-[0_0_12px_hsla(120,100%,50%,0.3)]"
@@ -52,22 +58,23 @@ export function Header() {
               How it Works
             </a>
             <Link href="/signin">
-              <Button
+              <AnimatedButton
                 className="btn-primary"
                 data-testid="button-sign-in"
               >
                 Sign In
-              </Button>
+              </AnimatedButton>
             </Link>
-          </nav>
-          <Button
+            </nav>
+          </AnimatedSection>
+          <AnimatedButton
             variant="ghost"
             size="icon"
-            className="md:hidden rounded-xl glass-effect border-0 fade-in stagger-2"
+            className="md:hidden rounded-xl glass-effect border-0"
             data-testid="button-mobile-menu"
           >
             <Menu className="h-6 w-6" />
-          </Button>
+          </AnimatedButton>
         </div>
       </div>
     </header>

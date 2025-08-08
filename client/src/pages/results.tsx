@@ -6,7 +6,10 @@ import { Link } from "wouter";
 import type { AITool } from "@shared/schema";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { AnimatedSection } from "@/components/animations/AnimatedSection";
+import { AnimatedButton } from "@/components/animations/AnimatedButton";
+import { StaggeredCards } from "@/components/animations/StaggeredCards";
 
 interface RecommendationResults {
   id: string;
@@ -298,19 +301,9 @@ export default function Results() {
 
       <div className="relative z-10">
         {/* Header Section */}
-        <motion.section 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="pt-12 pb-8 px-4 sm:px-6 lg:px-8"
-        >
+        <AnimatedSection className="pt-12 pb-8 px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto text-center">
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="mb-8"
-            >
+            <AnimatedSection delay={0.2} className="mb-8">
               <h1 className="text-4xl md:text-6xl font-light text-white mb-6 tracking-tight">
                 Based on your business description, here are the best AI tools and agents
                 <br />
@@ -324,114 +317,75 @@ export default function Results() {
                   <span className="text-sm text-gray-300">Powered by {results.usedProvider} AI</span>
                 </div>
               )}
-            </motion.div>
+            </AnimatedSection>
             
             {/* Action Buttons */}
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex justify-center flex-wrap gap-4 mb-12"
-            >
-              <Button 
+            <AnimatedSection delay={0.4} className="flex justify-center flex-wrap gap-4 mb-12">
+              <AnimatedButton 
                 onClick={handleExport}
                 className="bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm rounded-full px-6 py-3 font-medium transition-all duration-300 hover:scale-105"
                 data-testid="button-export-results"
               >
                 <Download className="mr-2 h-4 w-4" />
                 Export as PDF
-              </Button>
-              <Button 
+              </AnimatedButton>
+              <AnimatedButton 
                 onClick={handleShare}
                 className="bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-sm rounded-full px-6 py-3 font-medium transition-all duration-300 hover:scale-105"
                 data-testid="button-share-results"
               >
                 <Share className="mr-2 h-4 w-4" />
                 Share
-              </Button>
+              </AnimatedButton>
               <Link href="/input">
-                <Button 
+                <AnimatedButton 
                   className="bg-gradient-to-r from-purple-600 to-emerald-600 hover:from-purple-700 hover:to-emerald-700 text-white border-0 rounded-full px-6 py-3 font-medium transition-all duration-300 hover:scale-105"
                   data-testid="button-new-search"
                 >
                   <Search className="mr-2 h-4 w-4" />
                   New Search
-                </Button>
+                </AnimatedButton>
               </Link>
-            </motion.div>
+            </AnimatedSection>
           </div>
-        </motion.section>
+        </AnimatedSection>
 
         {/* Free Tools Section */}
         {freeTools.length > 0 && (
-          <motion.section 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="px-4 sm:px-6 lg:px-8 mb-16"
-          >
+          <AnimatedSection delay={0.6} className="px-4 sm:px-6 lg:px-8 mb-16">
             <div className="max-w-6xl mx-auto">
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.8 }}
-                className="text-center mb-12"
-              >
+              <AnimatedSection delay={0.8} className="text-center mb-12">
                 <div className="inline-flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-6 py-3 mb-6">
                   <Gift className="h-5 w-5 text-emerald-400" />
                   <span className="text-emerald-400 font-medium">Get started with these powerful free options</span>
                 </div>
-              </motion.div>
-              <div className="grid lg:grid-cols-2 gap-6">
+              </AnimatedSection>
+              <StaggeredCards className="grid lg:grid-cols-2 gap-6" staggerDelay={0.1}>
                 {freeTools.map((tool, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 1.0 + index * 0.1 }}
-                  >
-                    <ToolCard tool={tool} isPaid={false} />
-                  </motion.div>
+                  <ToolCard key={index} tool={tool} isPaid={false} />
                 ))}
-              </div>
+              </StaggeredCards>
             </div>
-          </motion.section>
+          </AnimatedSection>
         )}
 
         {/* Paid Tools Section */}
         {paidTools.length > 0 && (
-          <motion.section 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 1.2 }}
-            className="px-4 sm:px-6 lg:px-8 mb-16"
-          >
+          <AnimatedSection delay={1.2} className="px-4 sm:px-6 lg:px-8 mb-16">
             <div className="max-w-6xl mx-auto">
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 1.4 }}
-                className="text-center mb-12"
-              >
+              <AnimatedSection delay={1.4} className="text-center mb-12">
                 <div className="inline-flex items-center gap-3 bg-amber-500/10 border border-amber-500/20 rounded-full px-6 py-3 mb-6">
                   <Crown className="h-5 w-5 text-amber-400" />
                   <span className="text-amber-400 font-medium">Investment-grade solutions for scaling your business</span>
                 </div>
-              </motion.div>
-              <div className="grid lg:grid-cols-2 gap-6">
+              </AnimatedSection>
+              <StaggeredCards className="grid lg:grid-cols-2 gap-6" staggerDelay={0.1}>
                 {paidTools.map((tool, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 1.6 + index * 0.1 }}
-                  >
-                    <ToolCard tool={tool} isPaid={true} />
-                  </motion.div>
+                  <ToolCard key={index} tool={tool} isPaid={true} />
                 ))}
-              </div>
+              </StaggeredCards>
             </div>
-          </motion.section>
+          </AnimatedSection>
         )}
 
       </div>

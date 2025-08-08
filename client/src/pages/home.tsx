@@ -1,7 +1,12 @@
-
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Brain, Zap, Target, Clock, Sparkles, ChevronDown } from "lucide-react";
 import { Link } from "wouter";
+import { AnimatedSection } from "@/components/animations/AnimatedSection";
+import { AnimatedButton } from "@/components/animations/AnimatedButton";
+import { AnimatedCard } from "@/components/animations/AnimatedCard";
+import { FloatingElement } from "@/components/animations/FloatingElement";
+import { TypewriterText } from "@/components/animations/TypewriterText";
+import { StaggeredCards } from "@/components/animations/StaggeredCards";
 
 export default function Home() {
   return (
@@ -16,40 +21,47 @@ export default function Home() {
           <div className="absolute top-32 right-32 w-1.5 h-1.5 gradient-bg rounded-full floating-element opacity-35" style={{ animationDelay: '6s' }}></div>
           
           <div className="text-center max-w-4xl mx-auto">
-            <div className="fade-in">
+            <AnimatedSection delay={0.2}>
               <h1 className="gradient-text mb-8 leading-tight">
-                Find Perfect AI Tools<br />
+                <TypewriterText 
+                  text="Find Perfect AI Tools"
+                  delay={500}
+                  speed={80}
+                />
+                <br />
                 <span className="accent-gradient">Built for Your Business</span>
               </h1>
-            </div>
+            </AnimatedSection>
             
-            <div className="fade-in stagger-2">
+            <AnimatedSection delay={0.4}>
               <p className="text-large mb-12 max-w-3xl mx-auto">
                 Get personalized AI tool recommendations with detailed analysis, 
                 pricing comparisons, and implementation guides. No signup required.
               </p>
-            </div>
+            </AnimatedSection>
             
-            <div className="fade-in stagger-3">
+            <AnimatedSection delay={0.6}>
               <Link href="/input">
-                <Button className="btn-primary text-lg group relative overflow-hidden">
+                <AnimatedButton className="btn-primary text-lg group relative overflow-hidden">
                   <span className="relative z-10">Start Discovery</span>
                   <ArrowRight className="ml-3 h-5 w-5 transition-transform duration-500 group-hover:translate-x-1 relative z-10" />
-                </Button>
+                </AnimatedButton>
               </Link>
-            </div>
+            </AnimatedSection>
             
-            <div className="fade-in stagger-4">
+            <AnimatedSection delay={0.8}>
               <p className="mono text-sm text-muted-foreground mt-8 font-light">
                 // Instant • Free • No Registration
               </p>
-            </div>
+            </AnimatedSection>
           </div>
           
           {/* Scroll Indicator */}
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 fade-in stagger-5">
-            <ChevronDown className="w-6 h-6 text-muted-foreground animate-bounce" />
-          </div>
+          <AnimatedSection delay={1.0} className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+            <FloatingElement duration={2} amplitude={5}>
+              <ChevronDown className="w-6 h-6 text-muted-foreground" />
+            </FloatingElement>
+          </AnimatedSection>
         </div>
       </section>
 
@@ -57,49 +69,55 @@ export default function Home() {
       <section id="features" className="section-padding">
         <div className="container">
           <div className="text-center mb-20">
-            <div className="slide-in-left">
+            <AnimatedSection direction="left" delay={0.2}>
               <h2 className="gradient-text mb-6">
                 Why Choose Our Platform
               </h2>
-            </div>
-            <div className="slide-in-right stagger-2">
+            </AnimatedSection>
+            <AnimatedSection direction="right" delay={0.4}>
               <p className="text-large max-w-2xl mx-auto">
                 Advanced AI analysis meets intuitive design for the perfect tool discovery experience
               </p>
-            </div>
+            </AnimatedSection>
           </div>
           
-          <div className="grid-3">
-            <div className="card scale-in stagger-1">
-              <div className="icon-wrapper">
-                <Brain className="w-6 h-6 text-white" />
-              </div>
+          <StaggeredCards className="grid-3" staggerDelay={0.15}>
+            <AnimatedCard className="card" index={0}>
+              <FloatingElement duration={4} amplitude={3}>
+                <div className="icon-wrapper">
+                  <Brain className="w-6 h-6 text-white" />
+                </div>
+              </FloatingElement>
               <h3 className="text-center mb-4">Smart Analysis</h3>
               <p className="text-center text-muted-foreground">
                 Advanced AI understands your business context and requirements to deliver precise recommendations
               </p>
-            </div>
+            </AnimatedCard>
             
-            <div className="card scale-in stagger-2">
-              <div className="icon-wrapper">
-                <Target className="w-6 h-6 text-white" />
-              </div>
+            <AnimatedCard className="card" index={1}>
+              <FloatingElement duration={3.5} amplitude={4}>
+                <div className="icon-wrapper">
+                  <Target className="w-6 h-6 text-white" />
+                </div>
+              </FloatingElement>
               <h3 className="text-center mb-4">Detailed Insights</h3>
               <p className="text-center text-muted-foreground">
                 Comprehensive analysis including pros, cons, pricing, and implementation strategies
               </p>
-            </div>
+            </AnimatedCard>
             
-            <div className="card scale-in stagger-3">
-              <div className="icon-wrapper">
-                <Zap className="w-6 h-6 text-white" />
-              </div>
+            <AnimatedCard className="card" index={2}>
+              <FloatingElement duration={4.5} amplitude={2}>
+                <div className="icon-wrapper">
+                  <Zap className="w-6 h-6 text-white" />
+                </div>
+              </FloatingElement>
               <h3 className="text-center mb-4">Lightning Fast</h3>
               <p className="text-center text-muted-foreground">
                 Get instant recommendations and skip hours of manual research and comparison
               </p>
-            </div>
-          </div>
+            </AnimatedCard>
+          </StaggeredCards>
         </div>
       </section>
 
@@ -107,20 +125,20 @@ export default function Home() {
       <section id="how-it-works" className="section-padding bg-gradient-to-b from-transparent to-muted/20">
         <div className="container">
           <div className="text-center mb-20">
-            <div className="fade-in">
+            <AnimatedSection delay={0.2}>
               <h2 className="gradient-text mb-6">
                 Simple Process
               </h2>
-            </div>
-            <div className="fade-in stagger-2">
+            </AnimatedSection>
+            <AnimatedSection delay={0.4}>
               <p className="text-large max-w-2xl mx-auto">
                 Three steps to find your perfect AI tools
               </p>
-            </div>
+            </AnimatedSection>
           </div>
           
-          <div className="grid-3">
-            <div className="text-center slide-in-left stagger-1">
+          <StaggeredCards className="grid-3" staggerDelay={0.2}>
+            <AnimatedSection direction="left" className="text-center" delay={0.1}>
               <div className="w-16 h-16 bg-gradient-flow rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <span className="text-2xl font-bold text-white mono">01</span>
               </div>
@@ -128,59 +146,67 @@ export default function Home() {
               <p className="text-muted-foreground">
                 Tell us about your business goals, challenges, and specific requirements
               </p>
-            </div>
+            </AnimatedSection>
             
-            <div className="text-center slide-in-left stagger-2">
+            <AnimatedSection direction="left" className="text-center" delay={0.3}>
               <div className="w-16 h-16 bg-gradient-flow rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <span className="text-2xl font-bold text-white mono">02</span>
               </div>
               <h3 className="mb-4">AI Analysis</h3>
-              <p className="text-muted-foreground">
+              <p className="text-center text-muted-foreground">
                 Our advanced AI processes your requirements and searches our comprehensive database
               </p>
-            </div>
+            </AnimatedSection>
             
-            <div className="text-center slide-in-left stagger-3">
+            <AnimatedSection direction="left" className="text-center" delay={0.5}>
               <div className="w-16 h-16 bg-gradient-flow rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <span className="text-2xl font-bold text-white mono">03</span>
               </div>
               <h3 className="mb-4">Get Results</h3>
-              <p className="text-muted-foreground">
+              <p className="text-center text-muted-foreground">
                 Receive curated recommendations with detailed comparisons and implementation guides
               </p>
-            </div>
-          </div>
+            </AnimatedSection>
+          </StaggeredCards>
         </div>
       </section>
 
       {/* CTA Section */}
       <section className="section-padding">
         <div className="container">
-          <div className="glass-effect rounded-3xl p-12 text-center max-w-4xl mx-auto">
-            <div className="scale-in">
+          <AnimatedCard className="glass-effect rounded-3xl p-12 text-center max-w-4xl mx-auto">
+            <FloatingElement duration={3} amplitude={5}>
               <Sparkles className="w-12 h-12 text-white mx-auto mb-6" />
+            </FloatingElement>
+            <AnimatedSection delay={0.2}>
               <h2 className="accent-gradient mb-6">
                 Ready to Discover Your Perfect AI Tools?
               </h2>
+            </AnimatedSection>
+            <AnimatedSection delay={0.4}>
               <p className="text-large mb-8 max-w-2xl mx-auto">
                 Join thousands of businesses who've found their ideal AI solutions through our platform
               </p>
+            </AnimatedSection>
+            <AnimatedSection delay={0.6}>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <Link href="/input">
-                  <Button className="btn-primary text-lg">
+                  <AnimatedButton className="btn-primary text-lg">
                     Start Free Discovery
                     <ArrowRight className="ml-3 h-5 w-5" />
-                  </Button>
+                  </AnimatedButton>
                 </Link>
-                <Button className="btn-secondary text-lg">
+                <AnimatedButton className="btn-secondary text-lg">
                   Learn More
-                </Button>
+                </AnimatedButton>
               </div>
+            </AnimatedSection>
+            <AnimatedSection delay={0.8}>
               <p className="mono text-sm text-muted-foreground mt-6">
                 // No credit card required
               </p>
-            </div>
-          </div>
+            </AnimatedSection>
+          </AnimatedCard>
         </div>
       </section>
     </div>

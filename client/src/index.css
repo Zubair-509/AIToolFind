@@ -434,6 +434,13 @@
     font-weight: 400;
   }
 
+  /* Framer Motion Performance Optimizations */
+  .motion-reduce {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
   .floating-orb {
     position: absolute;
     border-radius: 50%;
@@ -625,6 +632,12 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  
+  /* Disable Framer Motion animations for users who prefer reduced motion */
+  .motion-reduce * {
+    animation: none !important;
+    transition: none !important;
   }
 }
 
