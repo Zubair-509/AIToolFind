@@ -16,6 +16,12 @@ export type AITool = z.infer<typeof aiToolSchema>;
 // Schema for validating AI recommendations response
 export const recommendationsResponseSchema = z.array(aiToolSchema);
 
+// Validation schema for API requests
+export const insertRecommendationSchema = z.object({
+  userInput: z.string().min(1, "Business description is required"),
+  preferredProvider: z.string().optional(),
+});
+
 // Recommendation types for storage (simplified since no database)
 export interface Recommendation {
   id: string;

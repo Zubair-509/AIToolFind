@@ -8,5 +8,32 @@ export interface IStorage {
   getAllRecommendations(): Promise<Recommendation[]>;
 }
 
-// Storage removed - no longer using database
-export const storage = null;
+// In-memory storage implementation
+class MemoryStorage implements IStorage {
+  private recommendations: Map<string, Recommendation> = new Map();
+
+  async getRecommendation(id: string): Promise<Recommendation | undefined> {
+    return this.recommendations.get(id);
+  }
+
+  async createRecommendation(recommendation: InsertRecommendation & { tools: AITool[] }): Promise<Recommendation> {
+    const id = randomUUID();
+    const newRecommendation: Recommendation = {
+      id,
+      tools: recommendation.tools,
+      created_at: new Date().toISOString(),
+      user_input: recommendation.user_input,
+    };
+    
+    this.recommendations.set(id, newRecommendation);
+    return newRecommendation;
+  }
+
+  async getAllRecommendations(): Promise<Recommendation[]> {
+    return Array.from(this.recommendations.values()).sort(
+      (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
+  }
+}
+
+export const storage = new MemoryStorage();
