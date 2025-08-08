@@ -78,9 +78,20 @@ export default function Input() {
 
   const getRecommendationsMutation = useMutation({
     mutationFn: async (data: FormData) => {
+      // Transform provider value back to original name for API
+      let providerForApi = selectedProvider;
+      if (selectedProvider !== "auto" && providersData?.providers) {
+        const provider = providersData.providers.find(p => 
+          p.name.toLowerCase().replace(/\s+/g, '-') === selectedProvider
+        );
+        if (provider) {
+          providerForApi = provider.name;
+        }
+      }
+      
       const response = await apiRequest("POST", "/api/recommendations", {
         userInput: data.userInput,
-        preferredProvider: selectedProvider,
+        preferredProvider: providerForApi,
       });
       return response.json();
     },

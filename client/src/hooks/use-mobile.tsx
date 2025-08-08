@@ -8,6 +8,8 @@ export function useIsMobile() {
   const [isMobile, setIsMobile] = React.useState<boolean | undefined>(undefined)
 
   React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
     const onChange = () => {
       setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
@@ -24,6 +26,8 @@ export function useIsSmallMobile() {
   const [isSmallMobile, setIsSmallMobile] = React.useState<boolean | undefined>(undefined)
 
   React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const mql = window.matchMedia(`(max-width: ${SMALL_MOBILE_BREAKPOINT - 1}px)`)
     const onChange = () => {
       setIsSmallMobile(window.innerWidth < SMALL_MOBILE_BREAKPOINT)

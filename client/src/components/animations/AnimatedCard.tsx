@@ -19,7 +19,9 @@ export function AnimatedCard({
   const isSmallMobile = useIsSmallMobile();
 
   // Reduce motion on mobile for better performance
-  const shouldReduceMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const shouldReduceMotion = typeof window !== 'undefined' && 
+    window.matchMedia && 
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   
   // Mobile optimized animations
   const mobileInitial = { y: 20, opacity: 0 };
