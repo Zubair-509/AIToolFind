@@ -28,12 +28,12 @@ export function AnimatedCard({
       whileHover={{
         y: -8,
         scale: 1.02,
-        boxShadow: "0 25px 50px rgba(0, 0, 0, 0.25), 0 0 40px rgba(139, 92, 246, 0.1)"
-      }}
-      transition={{
-        type: "spring",
-        stiffness: 300,
-        damping: 30
+        boxShadow: "0 25px 50px rgba(0, 0, 0, 0.25), 0 0 40px rgba(139, 92, 246, 0.1)",
+        transition: {
+          type: "spring",
+          stiffness: 300,
+          damping: 30
+        }
       }}
     >
       {children}
