@@ -5,7 +5,7 @@ import { AIService } from "./services/ai-providers";
 import { insertRecommendationSchema } from "@shared/schema";
 import { z } from "zod";
 import { nanoid } from "nanoid";
-import { GeminiProvider } from "./services/ai-providers/gemini";
+import { GeminiProvider } from "./services/ai-providers";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Initialize AI service
