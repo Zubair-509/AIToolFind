@@ -6,6 +6,24 @@ import { insertRecommendationSchema } from "@shared/schema";
 import { z } from "zod";
 import { nanoid } from "nanoid";
 import { GeminiProvider } from "./services/ai-providers";
+import jwt from 'jsonwebtoken';
+
+// Middleware to extract user ID from Supabase JWT (optional)
+const extractUserId = (req: any) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return null;
+  }
+
+  try {
+    const token = authHeader.substring(7);
+    // Note: In production, you should verify the JWT with Supabase's public key
+    const decoded = jwt.decode(token) as any;
+    return decoded?.sub || null;
+  } catch (error) {
+    return null;
+  }
+};
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Initialize AI service
@@ -23,6 +41,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Get preferred provider from request (default to auto)
       const preferredProvider = req.body.preferredProvider || "auto";
 
+      // Extract user ID if authenticated
+      const userId = extractUserId(req);
+
       // Get AI recommendations using available providers
       const { tools, usedProvider } = await aiService.generateRecommendations(userInput, preferredProvider);
 
@@ -30,6 +51,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const recommendation = await storage.createRecommendation({
         userInput,
         tools,
+        userId,
       });
 
       res.json({
@@ -42,6 +64,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ 
         message: "Failed to get AI recommendations. Please try again." 
       });
+    }
+  });
+
+  // Get recommendation by ID
+  app.get("/api/recommendations/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const recommendation = await storage.getRecommendation(id);
+
+      if (!recommendation) {
+        return res.status(404).json({ message: "Recommendation not found" });
+      }
+
+      res.json(recommendation);
+    } catch (error) {
+      console.error("Error fetching recommendation:", error);
+      res.status(500).json({ message: "Failed to fetch recommendation" });
+    }
+  });
+
+  // Get user's recommendations (authenticated route)
+  app.get("/api/recommendations/user/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      
+      // In production, verify that the requesting user matches the userId
+      const requestingUserId = extractUserId(req);
+      if (!requestingUserId || requestingUserId !== userId) {
+        return res.status(403).json({ message: "Unauthorized" });
+      }
+
+      const recommendations = await storage.getUserRecommendations(userId);
+      res.json(recommendations);
+    } catch (error) {
+      console.error("Error fetching user recommendations:", error);
+      res.status(500).json({ message: "Failed to fetch recommendations" });
     }
   });
 
@@ -65,23 +123,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error getting providers:", error);
       res.status(500).json({ error: "Failed to get providers" });
-    }
-  });
-
-  // Get recommendation by ID
-  app.get("/api/recommendations/:id", async (req, res) => {
-    try {
-      const { id } = req.params;
-      const recommendation = await storage.getRecommendation(id);
-
-      if (!recommendation) {
-        return res.status(404).json({ message: "Recommendation not found" });
-      }
-
-      res.json(recommendation);
-    } catch (error) {
-      console.error("Error fetching recommendation:", error);
-      res.status(500).json({ message: "Failed to fetch recommendation" });
     }
   });
 
