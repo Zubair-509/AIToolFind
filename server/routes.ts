@@ -6,7 +6,6 @@ import { insertRecommendationSchema } from "@shared/schema";
 import { z } from "zod";
 import { nanoid } from "nanoid";
 import { GeminiProvider } from "./services/ai-providers";
-import jwt from 'jsonwebtoken';
 
 // Middleware to extract user ID from Supabase JWT (optional)
 const extractUserId = (req: any) => {
@@ -17,10 +16,15 @@ const extractUserId = (req: any) => {
 
   try {
     const token = authHeader.substring(7);
-    // Note: In production, you should verify the JWT with Supabase's public key
-    const decoded = jwt.decode(token) as any;
+    // For now, we'll extract the user ID from the token payload without verification
+    // In production, you should verify the JWT with Supabase's public key
+    const payload = token.split('.')[1];
+    if (!payload) return null;
+    
+    const decoded = JSON.parse(Buffer.from(payload, 'base64').toString());
     return decoded?.sub || null;
   } catch (error) {
+    console.error('Error extracting user ID from token:', error);
     return null;
   }
 };
