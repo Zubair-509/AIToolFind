@@ -92,6 +92,11 @@ export function ToolCard({ tool, isPaid = false }: ToolCardProps) {
         <AnimatedButton 
           className="w-full bg-gradient-to-r from-purple-600 to-emerald-600 hover:from-purple-700 hover:to-emerald-700 text-white border-0 rounded-lg py-3 font-medium transition-all duration-300 group-hover:scale-105 mt-auto"
           data-testid={`button-visit-tool-${tool.tool_name.toLowerCase().replace(/\s+/g, '-')}`}
+          onClick={() => {
+            if (tool.link) {
+              window.open(tool.link, '_blank', 'noopener,noreferrer');
+            }
+          }}
         >
           Visit Tool <ExternalLink className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
         </AnimatedButton>

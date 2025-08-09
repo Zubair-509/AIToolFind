@@ -3,12 +3,14 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertRecommendationSchema } from "@shared/schema";
 import { z } from "zod";
+import { getAIToolRecommendations } from "./gemini";
+import { nanoid } from "nanoid";
 
 
 
 export async function registerRoutes(app: Express): Promise<Server> {
 
-  // Get AI tool recommendations - temporarily disabled
+  // Get AI tool recommendations using Gemini AI
   app.post("/api/recommendations", async (req, res) => {
     try {
       const { userInput } = insertRecommendationSchema.parse(req.body);
@@ -17,14 +19,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Business description is required" });
       }
 
-      // AI services temporarily disabled - return placeholder message
-      res.status(503).json({ 
-        message: "AI recommendations service is currently being reconfigured. Please try again later." 
-      });
+      console.log("Getting AI recommendations for:", userInput);
+
+      // Get recommendations from Gemini AI
+      const tools = await getAIToolRecommendations(userInput);
+      
+      // Store the recommendation
+      const recommendation = {
+        id: nanoid(),
+        tools,
+        created_at: new Date().toISOString(),
+        user_input: userInput,
+      };
+
+      await storage.createRecommendation(recommendation);
+
+      res.json(recommendation);
     } catch (error) {
-      console.error("Error processing request:", error);
+      console.error("Error getting AI recommendations:", error);
       res.status(500).json({ 
-        message: "Failed to process request. Please try again." 
+        message: "Failed to get AI recommendations. Please try again.",
+        error: error instanceof Error ? error.message : "Unknown error"
       });
     }
   });
@@ -57,13 +72,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // AI providers temporarily disabled
+  // Get available AI providers
   app.get("/api/providers", async (req, res) => {
     try {
+      const providers = [
+        {
+          name: "gemini",
+          available: true,
+          model: "Gemini 2.5 Flash"
+        }
+      ];
+
       res.json({ 
-        providers: [],
-        count: 0,
-        message: "AI providers are being reconfigured"
+        providers,
+        count: providers.length,
+        message: "Gemini AI is ready for recommendations"
       });
     } catch (error) {
       console.error("Error getting providers:", error);

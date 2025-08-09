@@ -7,8 +7,9 @@ export const aiToolSchema = z.object({
   purpose: z.string(),
   pros: z.array(z.string()),
   cons: z.array(z.string()),
-  pricing: z.enum(["Free", "Freemium", "Paid"]),
+  pricing: z.string(),
   why_fit: z.string(),
+  link: z.string().optional(),
 });
 
 export type AITool = z.infer<typeof aiToolSchema>;
