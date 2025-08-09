@@ -21,20 +21,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       console.log("Getting AI recommendations for:", userInput);
 
-      // Get recommendations from Gemini AI
-      const tools = await getAIToolRecommendations(userInput);
-      
-      // Store the recommendation
-      const recommendation = {
+      const { preferredProvider } = req.body;
+      let modelToUse = "gemini-2.5-flash"; // default
+      let providerName = "Gemini AI";
+
+      // Handle specific model selection
+      if (preferredProvider === "gemini-2.5-pro") {
+        modelToUse = "gemini-2.5-pro";
+        providerName = "Gemini 2.5 Pro";
+      }
+
+      const recommendations = await getAIToolRecommendations(userInput, modelToUse);
+
+      const result = {
         id: nanoid(),
-        tools,
-        created_at: new Date().toISOString(),
-        user_input: userInput,
+        tools: recommendations,
+        usedProvider: providerName
       };
 
-      await storage.createRecommendation(recommendation);
-
-      res.json(recommendation);
+      res.json(result);
     } catch (error) {
       console.error("Error getting AI recommendations:", error);
       res.status(500).json({ 
@@ -80,6 +85,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
           name: "gemini",
           available: true,
           model: "Gemini 2.5 Flash"
+        },
+        {
+          name: "gemini-2.5-pro",
+          available: true,
+          model: "Gemini 2.5 Pro"
         }
       ];
 

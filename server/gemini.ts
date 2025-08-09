@@ -12,7 +12,7 @@ export interface AITool {
   link?: string;
 }
 
-export async function getAIToolRecommendations(userInput: string): Promise<AITool[]> {
+export async function getAIToolRecommendations(userInput: string, model: string = "gemini-2.5-flash"): Promise<AITool[]> {
   try {
     const prompt = `You are an AI assistant and tool recommender that recommends the best and latest AI tools to users based on their business goals or needs.
 
@@ -55,7 +55,7 @@ User Input:
 "${userInput}"`;
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: model,
       config: {
         responseMimeType: "application/json",
         responseSchema: {

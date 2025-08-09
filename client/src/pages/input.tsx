@@ -162,6 +162,12 @@ For example: I'm starting a clothing brand and need help with social media marke
                         Auto-select Best Available
                       </div>
                     </SelectItem>
+                    <SelectItem value="gemini-2.5-pro" className="text-lg font-light cursor-pointer">
+                      <div className="flex items-center">
+                        <div className="w-2 h-2 rounded-full mr-3 bg-blue-400"></div>
+                        Gemini 2.5 Pro
+                      </div>
+                    </SelectItem>
                     <SelectItem 
                       value="ready-for-setup" 
                       className="text-lg font-light opacity-60"
