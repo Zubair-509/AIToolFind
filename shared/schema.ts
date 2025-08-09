@@ -1,4 +1,3 @@
-
 import { z } from "zod";
 
 // AI Tool schema for recommendations
@@ -10,6 +9,7 @@ export const aiToolSchema = z.object({
   pricing: z.string(),
   why_fit: z.string(),
   link: z.string().optional(),
+  type: z.string().optional(), // Added type field
 });
 
 export type AITool = z.infer<typeof aiToolSchema>;

@@ -10,17 +10,18 @@ export interface AITool {
   pricing: string;
   why_fit: string;
   link?: string;
+  type?: string;
 }
 
 export async function getAIToolRecommendations(userInput: string, model: string = "gemini-2.5-flash"): Promise<AITool[]> {
   try {
-    const prompt = `You are an AI assistant and tool recommender that recommends the best and latest AI tools to users based on their business goals or needs.
+    const prompt = `You are an AI assistant and tool recommender that recommends the best and latest AI tools and AI agents to users based on their business goals or needs.
 
 Your task is to:
 1. Analyze the user's business description or goal.
 2. Suggest 4 paid and 5 unpaid AI tools that can help them.
-3. Also add paid/unpaid AI Agents if they are best according to user need
-3. For each tool, provide:
+3. Also add 2 paid & 2 unpaid AI Agents if they are best according to user need
+4. For each tool and agent, provide:
     - Tool Name
     - Purpose
     - Pros
@@ -28,8 +29,12 @@ Your task is to:
     - Pricing (Free / Freemium / Paid)
     - Why it's a good fit
     - Their link so user can access it
+    - Type (either "tool" or "agent")
 
-Only suggest trusted and real tools that are up to date as of 2025. Tailor your answer to match the user's specific use case.
+Only suggest trusted and real tools and agents that are up to date as of 2025. Tailor your answer to match the user's specific use case.
+
+AI Agents are autonomous AI systems that can perform tasks independently (like Replit Agent, v0.dev, Bolt.new, Cursor Composer, Claude Artifacts, etc.).
+AI Tools are traditional software applications enhanced with AI capabilities.
 
 Respond with JSON array format like this example:
 [
@@ -47,7 +52,25 @@ Respond with JSON array format like this example:
     ],
     "pricing": "Freemium",
     "why_fit": "Perfect for creating professional Instagram posts, logos, and stories without needing graphic design skills.",
-    "link": "https://canva.com"
+    "link": "https://canva.com",
+    "type": "tool"
+  },
+  {
+    "tool_name": "v0.dev",
+    "purpose": "AI agent that generates React components from text prompts",
+    "pros": [
+      "Creates production-ready React components",
+      "Understands modern design patterns",
+      "Integrates with shadcn/ui components"
+    ],
+    "cons": [
+      "Limited to React/Next.js ecosystem",
+      "Requires Vercel account for full features"
+    ],
+    "pricing": "Freemium",
+    "why_fit": "Perfect for rapidly prototyping UI components for your application without manual coding.",
+    "link": "https://v0.dev",
+    "type": "agent"
   }
 ]
 
@@ -78,9 +101,13 @@ User Input:
                 enum: ["Free", "Freemium", "Paid"]
               },
               why_fit: { type: "string" },
-              link: { type: "string" }
+              link: { type: "string" },
+              type: {
+                type: "string",
+                enum: ["tool", "agent"]
+              }
             },
-            required: ["tool_name", "purpose", "pros", "cons", "pricing", "why_fit"]
+            required: ["tool_name", "purpose", "pros", "cons", "pricing", "why_fit", "type"]
           }
         }
       },

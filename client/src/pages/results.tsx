@@ -21,6 +21,8 @@ export default function Results() {
   const [results, setResults] = useState<RecommendationResults | null>(null);
   const [freeTools, setFreeTools] = useState<AITool[]>([]);
   const [paidTools, setPaidTools] = useState<AITool[]>([]);
+  const [freeAgents, setFreeAgents] = useState<AITool[]>([]);
+  const [paidAgents, setPaidAgents] = useState<AITool[]>([]);
 
   useEffect(() => {
     // Get results from sessionStorage
@@ -29,16 +31,28 @@ export default function Results() {
       const parsedResults: RecommendationResults = JSON.parse(storedResults);
       setResults(parsedResults);
       
-      // Separate free/freemium and paid tools
-      const free = parsedResults.tools.filter(tool => 
+      // Separate tools and agents, then by pricing
+      const tools = parsedResults.tools.filter(item => item.type === "tool" || !item.type);
+      const agents = parsedResults.tools.filter(item => item.type === "agent");
+      
+      const freeToolsFiltered = tools.filter(tool => 
         tool.pricing === "Free" || tool.pricing === "Freemium"
       );
-      const paid = parsedResults.tools.filter(tool => 
+      const paidToolsFiltered = tools.filter(tool => 
         tool.pricing === "Paid"
       );
       
-      setFreeTools(free);
-      setPaidTools(paid);
+      const freeAgentsFiltered = agents.filter(agent => 
+        agent.pricing === "Free" || agent.pricing === "Freemium"
+      );
+      const paidAgentsFiltered = agents.filter(agent => 
+        agent.pricing === "Paid"
+      );
+      
+      setFreeTools(freeToolsFiltered);
+      setPaidTools(paidToolsFiltered);
+      setFreeAgents(freeAgentsFiltered);
+      setPaidAgents(paidAgentsFiltered);
     }
   }, []);
 
@@ -191,7 +205,7 @@ export default function Results() {
         
         pdf.setFontSize(18);
         pdf.setFont('helvetica', 'bold');
-        pdf.text('Free & Freemium Tools & Agents', margin, yPosition);
+        pdf.text('Free & Freemium AI Tools', margin, yPosition);
         yPosition += 15;
         
         freeTools.forEach((tool, index) => {
@@ -211,11 +225,51 @@ export default function Results() {
         
         pdf.setFontSize(18);
         pdf.setFont('helvetica', 'bold');
-        pdf.text('Premium Tools & Agents', margin, yPosition);
+        pdf.text('Premium AI Tools', margin, yPosition);
         yPosition += 15;
         
         paidTools.forEach((tool, index) => {
           addToolToPdf(tool, index);
+        });
+      }
+      
+      // Free Agents Section
+      if (freeAgents.length > 0) {
+        // Check if we need a new page for free agents section
+        if (yPosition + 25 > usableHeight) {
+          pdf.addPage();
+          yPosition = margin;
+        } else {
+          yPosition += 5;
+        }
+        
+        pdf.setFontSize(18);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text('Free & Freemium AI Agents', margin, yPosition);
+        yPosition += 15;
+        
+        freeAgents.forEach((agent, index) => {
+          addToolToPdf(agent, index);
+        });
+      }
+      
+      // Paid Agents Section
+      if (paidAgents.length > 0) {
+        // Check if we need a new page for paid agents section
+        if (yPosition + 25 > usableHeight) {
+          pdf.addPage();
+          yPosition = margin;
+        } else {
+          yPosition += 5;
+        }
+        
+        pdf.setFontSize(18);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text('Premium AI Agents', margin, yPosition);
+        yPosition += 15;
+        
+        paidAgents.forEach((agent, index) => {
+          addToolToPdf(agent, index);
         });
       }
       
@@ -382,6 +436,48 @@ export default function Results() {
               <StaggeredCards className="grid lg:grid-cols-2 gap-6" staggerDelay={0.1}>
                 {paidTools.map((tool, index) => (
                   <ToolCard key={index} tool={tool} isPaid={true} />
+                ))}
+              </StaggeredCards>
+            </div>
+          </AnimatedSection>
+        )}
+
+        {/* Free AI Agents Section */}
+        {freeAgents.length > 0 && (
+          <AnimatedSection delay={1.6} className="px-4 sm:px-6 lg:px-8 mb-16">
+            <div className="max-w-6xl mx-auto">
+              <AnimatedSection delay={1.8} className="text-center mb-12">
+                <div className="inline-flex items-center gap-3 bg-purple-500/10 border border-purple-500/20 rounded-full px-6 py-3 mb-6">
+                  <div className="w-5 h-5 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center">
+                    <div className="w-2 h-2 rounded-full bg-white"></div>
+                  </div>
+                  <span className="text-purple-400 font-medium">Autonomous AI agents to automate your workflow</span>
+                </div>
+              </AnimatedSection>
+              <StaggeredCards className="grid lg:grid-cols-2 gap-6" staggerDelay={0.1}>
+                {freeAgents.map((agent, index) => (
+                  <ToolCard key={index} tool={agent} isPaid={false} />
+                ))}
+              </StaggeredCards>
+            </div>
+          </AnimatedSection>
+        )}
+
+        {/* Paid AI Agents Section */}
+        {paidAgents.length > 0 && (
+          <AnimatedSection delay={2.0} className="px-4 sm:px-6 lg:px-8 mb-16">
+            <div className="max-w-6xl mx-auto">
+              <AnimatedSection delay={2.2} className="text-center mb-12">
+                <div className="inline-flex items-center gap-3 bg-indigo-500/10 border border-indigo-500/20 rounded-full px-6 py-3 mb-6">
+                  <div className="w-5 h-5 rounded-full bg-gradient-to-r from-indigo-400 to-purple-400 flex items-center justify-center">
+                    <Crown className="h-3 w-3 text-white" />
+                  </div>
+                  <span className="text-indigo-400 font-medium">Premium AI agents for enterprise-level automation</span>
+                </div>
+              </AnimatedSection>
+              <StaggeredCards className="grid lg:grid-cols-2 gap-6" staggerDelay={0.1}>
+                {paidAgents.map((agent, index) => (
+                  <ToolCard key={index} tool={agent} isPaid={true} />
                 ))}
               </StaggeredCards>
             </div>
